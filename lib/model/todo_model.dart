@@ -17,7 +17,7 @@ class TodoModel{
   @HiveField(4)
   int index;
 
-  TodoModel({this.name, this.notes, this.icon, this.isDone = false, this.index});
+  TodoModel({this.name, this.notes, this.icon = 1, this.isDone = false, this.index});
 
 
 }

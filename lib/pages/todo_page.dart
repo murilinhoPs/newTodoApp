@@ -23,6 +23,13 @@ class _MyTodoPageState extends State<MyTodoPage> {
   final tasksBox = Hive.box('tasks');
 
   @override
+  initState() {
+    _taskNoteController = TextEditingController();
+    _taskNameController = TextEditingController();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final phoneW = MediaQuery.of(context).size.width;
     final phoneH = MediaQuery.of(context).size.height;
@@ -76,6 +83,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
       body: _beforeTodoList(context),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          //tasksBox.clear();
           _openTodoDialog(null);
         },
         tooltip: 'Increment',
@@ -88,7 +96,11 @@ class _MyTodoPageState extends State<MyTodoPage> {
     final phoneW = MediaQuery.of(context).size.width;
     final phoneH = MediaQuery.of(context).size.height;
 
-    final percent = (( 1 / 2) * 100);
+    final valIsDone =
+        tasksBox.values.where((todo) => todo.isDone == true).toList();
+
+    final percent =
+        tasksBox.length > 0 ? ((valIsDone.length / tasksBox.length) * 100) : 0;
 
     return Center(
       child: Column(
@@ -101,7 +113,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
             margin: EdgeInsets.only(left: phoneW / 20.0),
             padding: EdgeInsets.all(10),
             child: Text(
-              "Tem ${tasksBox.length} tarefas",
+              "Tem ${tasksBox.values.where((todo) => todo.isDone == false).toList().length} tarefas",
               style: TextStyle(color: Colors.grey[700]),
             ),
           ),
@@ -134,11 +146,19 @@ class _MyTodoPageState extends State<MyTodoPage> {
                 reverse: false,
                 shrinkWrap: true,
                 itemCount: tasksBox.length,
-                itemBuilder: (context, index) {           
+                itemBuilder: (context, index) {
+                  // BLOC
                   // read
                   final todo = crudOperations.readTodo(index);
                   // update the index
-                  crudOperations.updateTodo(index, TodoModel(name:todo.name,notes: todo.notes,index: index));
+                  crudOperations.updateTodo(
+                      index,
+                      TodoModel(
+                          name: todo.name,
+                          notes: todo.notes,
+                          index: index,
+                          isDone: todo.isDone));
+                  // BLOC
                   return _todoList(todo);
                 }),
           ),
@@ -195,19 +215,19 @@ class _MyTodoPageState extends State<MyTodoPage> {
                       Radius.circular(50.0),
                     ),
                   ),
-
                   child: Icon(
                     MyFlutterIcons.twitch,
                     color: Cor().customColor,
                     size: phoneW * .062,
                     //color: customColorBody,
                   ),
-                  //=> _abrirUrl(todo.taskIcon),
                   onPressed: () {
+                    // BLOC
                     // if (Platform.isAndroid)
                     //   _todoLogic.abrirUrl(todo.taskIcon, context);
                     // else if (Platform.isIOS)
                     //   _todoLogic.abririOS(todo.taskIcon, context);
+                    // BLOC
                   },
                 ),
               ),
@@ -265,24 +285,29 @@ class _MyTodoPageState extends State<MyTodoPage> {
         icon: todo.isDone
             ? Icon(Icons.check_circle_outline, color: Cor().customColorBody)
             : Icon(Icons.radio_button_unchecked, color: Cor().customColorBody),
-        onPressed: () {},
+        onPressed: () {
+          // BLOC
+          crudOperations.updateTodo(
+              todo.index,
+              TodoModel(
+                name: todo.name,
+                notes: todo.notes,
+                isDone: !todo.isDone,
+              ));
+          // BLOC
+        },
       ),
       trailing: IconButton(
           color: Colors.red,
           icon: Icon(Icons.delete_outline),
-          onPressed: () async {
+          onPressed: () {
+            // BLOC
             crudOperations.deleteTodo(todo.index);
-            print('deleted');
+            // BLOC
           }),
-
       onTap: () {
         print(todo.index);
         _openTodoDialog(todo);
-      },
-      // task state, feito ou não
-      onLongPress: () {
-        //TODO: Update item
-        print('longPress');
       },
     );
   }
@@ -292,14 +317,38 @@ class _MyTodoPageState extends State<MyTodoPage> {
     String taskName = '';
     String taskNote = '';
 
+    List<String> _iconNames = [
+      'Nota',
+      'Facebook',
+      'Instagram',
+      'WhatsApp',
+      'Youtube',
+      'Linkedin',
+      'Twitter',
+      'Pinterest',
+      'Google',
+      'Blog',
+      'TikTok',
+      'Snapchat',
+      'SlideShare',
+      'Flickr',
+    ].toList();
+    String _selectionIcon = 'Nota';
+    int _iconPriority = 1;
+
     if (todo != null) {
       taskName = todo.name;
       taskNote = todo.notes;
 
       //_iconPriority = todo.icon;
 
-      // _taskNameController.text = taskName;
-      //_taskNoteController.text = taskNote;
+      _taskNameController.text = todo.name;
+      _taskNoteController.text = todo.notes;
+    } else {
+      taskName = '';
+      taskNote = '';
+      _taskNoteController.clear();
+      _taskNameController.clear();
     }
 
     return showDialog(
@@ -313,12 +362,37 @@ class _MyTodoPageState extends State<MyTodoPage> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(15.0))),
             title: Text(
-              'Seu planejamento',
+              'Seu lembrete',
               style: TextStyle(fontFamily: ' Nunito'),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                InputDecorator(
+                  decoration: InputDecoration(labelText: 'Redes Sociais'),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      isDense: true,
+                      items: _iconNames.map((String value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(
+                            value,
+                          ),
+                        );
+                      }).toList(),
+                      value: _iconNames[todo == null
+                          ? (_iconPriority - 1)
+                          : (todo.icon - 1)],
+                      onChanged: (value) async {
+                        //_atualizarIcon(value);
+                        print(value + ' prioridade ' + '$_iconPriority');
+                      },
+                      isExpanded: true,
+                      iconSize: 24.0,
+                    ),
+                  ),
+                ),
                 // Task name
                 Row(
                   children: <Widget>[
@@ -384,7 +458,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
                   } else {
                     _formKey.currentState.save();
                     final newTodo = TodoModel(name: taskName, notes: taskNote);
-                    crudOperations.updateTodo(todo.index,newTodo);
+                    crudOperations.updateTodo(todo.index, newTodo);
                     _formKey.currentState.reset();
                   }
                   Navigator.of(context).pop();

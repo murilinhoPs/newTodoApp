@@ -18,6 +18,7 @@ class AppDatabase {
 
     final db = Hive.init(dbPath);
 
+
     Hive.registerAdapter(TodoModelAdapter());
 
     await Hive.openBox(
