@@ -21,13 +21,14 @@ class TodoModelAdapter extends TypeAdapter<TodoModel> {
       notes: fields[1] as String,
       icon: fields[2] as int,
       isDone: fields[3] as bool,
+      index: fields[4] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, TodoModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -35,6 +36,8 @@ class TodoModelAdapter extends TypeAdapter<TodoModel> {
       ..writeByte(2)
       ..write(obj.icon)
       ..writeByte(3)
-      ..write(obj.isDone);
+      ..write(obj.isDone)
+      ..writeByte(4)
+      ..write(obj.index);
   }
 }

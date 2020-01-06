@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_generator/hive_generator.dart';
 
 part 'todo_model.g.dart';
 
@@ -8,15 +7,17 @@ part 'todo_model.g.dart';
 class TodoModel{
 
   @HiveField(0)
-  final String name;
+  String name;
   @HiveField(1)
-  final String notes;
+  String notes;
   @HiveField(2)
-  final int icon;
+  int icon;
   @HiveField(3)
-  final bool isDone;
+  bool isDone;
+  @HiveField(4)
+  int index;
 
-  TodoModel({@required this.name, this.notes, this.icon, this.isDone = false});
+  TodoModel({this.name, this.notes, this.icon, this.isDone = false, this.index});
 
 
 }
