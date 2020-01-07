@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:new_todo_trianons/custom/global_theme.dart';
 import 'package:new_todo_trianons/database/app_database.dart';
 import 'package:new_todo_trianons/pages/todo_page.dart';
+import 'package:provider/provider.dart';
 
-import 'custom/Colors.dart';
-import 'model/todo_model.dart';
+import 'bloc/dicas_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,47 +20,33 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final ThemeData globalTheme = ThemeData(
-      fontFamily: 'Nunito',
-      primaryColor: Colors.white,
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Cor().appBarGradientCima, elevation: 7.0),
-      iconTheme: IconThemeData(
-          color: Cor()
-              .customColor[600]), //IconThemeData(color: Colors.purple[600]),
-      cursorColor: Cor().customColor, //Colors.purple[600],
-      accentColor: Cor().customColorBody, //Colors.purple[600],
-      textTheme: TextTheme(
-        body1: TextStyle(
-            fontFamily: 'Nunito', fontSize: 16, color: Cor().customColor),
-        subtitle: TextStyle(
-            decorationColor: Cor().customColor,
-            color: Cor().customColor,
-            fontSize: 18,
-            fontFamily: 'Nunito'),
-        title: TextStyle(
-            decorationColor: Cor().customColor,
-            color: Cor().customColor,
-            fontSize: 22,
-            fontFamily: 'Nunito'),
-      ),
-      cardTheme: CardTheme(
-        elevation: 2.0,
-      ));
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: globalTheme,
-      home: ValueListenableBuilder(
-          valueListenable: Hive.box('tasks').listenable(),
-          builder:
-              (BuildContext context, Box tasksBox, Widget widget) {
-            return MyTodoPage();
-            //return Scaffold(body: Center(child: CircularProgressIndicator()));
-          }),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<DicasState>.value(value: DicasState()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: MyTheme.globalTheme,
+        home: FutureBuilder(
+            future: Hive.openBox(
+              'tasks',
+              compactionStrategy: (int total, int deleted) {
+                return deleted > 10;
+              },
+            ),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError) {
+                  return Text(snapshot.error.toString());
+                }
+                return MyTodoPage();
+              }
+              return Scaffold(body: Center(child: CircularProgressIndicator()));
+            }),
+      ),
     );
   }
 }

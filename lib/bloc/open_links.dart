@@ -6,69 +6,67 @@ import 'package:toast/toast.dart';
 class CardLinks {
   showError(BuildContext context) {
     return Toast.show('Não foi possível comunicar com o servidor', context,
-        duration: 5,
+        duration: 3,
         backgroundColor: Colors.grey[300],
         textColor: Colors.black);
   }
 
-  IconData dicaIcon(int value) => MyFlutterIcons.lamp;
-
-  IconData redeSocialIcon(int value) {
+  IconData renderIcon(String value) {
     switch (value) {
-      case 1:
+      case 'Lembrete':
         return Icons.note;
         break;
-      case 2:
+      case 'Facebook':
         return (MyFlutterIcons.facebook);
         break;
-      case 3:
+      case 'Instagram':
         return (MyFlutterIcons.instagram);
         break;
-      case 4:
+      case 'WhatsApp':
         return (MyFlutterIcons.whatsapp);
         break;
-      case 5:
+      case 'Youtube':
         return (MyFlutterIcons.youtube_play);
         break;
-      case 6:
+      case 'Linkedin':
         return (MyFlutterIcons.linkedin_rect);
         break;
-      case 7:
+      case 'Twitter':
         return (MyFlutterIcons.twitter);
         break;
-      case 8:
+      case 'Pinteres':
         return (MyFlutterIcons.pinterest);
         break;
-      case 9:
+      case 'Google':
         return (MyFlutterIcons.google);
         break;
-      case 10:
+      case 'Blog':
         return (MyFlutterIcons.blogger);
         break;
-      case 11:
+      case 'TikTok':
         return (MyFlutterIcons.tik_tok);
         break;
-      case 12:
+      case 'Snapchat':
         return (MyFlutterIcons.snapchat_ghost);
         break;
-      case 13:
+      case 'SlideShare':
         return (MyFlutterIcons.slideshare);
         break;
-      case 14:
+      case 'Flickr':
         return (MyFlutterIcons.flickr);
         break;
     }
   }
 
-  Future abrirAndroidUrl(int value, context) async {
+  Future abrirAndroidUrl(String value, context) async {
     switch (value) {
-      case 1:
+      case 'Lembrete':
         Toast.show('Apenas uma nota lembrete', context,
             duration: 4,
             backgroundColor: Colors.grey[300],
             textColor: Colors.black);
         break;
-      case 2:
+      case 'Facebook':
         if (await canLaunch('https://www.facebook.com/')) {
           try {
             await launch('fb://', enableJavaScript: true);
@@ -80,7 +78,7 @@ class CardLinks {
           showError(context);
         }
         break;
-      case 3:
+      case 'Instagram':
         if (await canLaunch('https://www.instagram.com/')) {
           try {
             await launch(
@@ -95,7 +93,7 @@ class CardLinks {
           showError(context);
         }
         break;
-      case 4:
+      case 'WhatsApp':
         if (await canLaunch('https://whatsapp.com/')) {
           try {
             await launch(
@@ -110,7 +108,7 @@ class CardLinks {
           showError(context);
         }
         break;
-      case 5:
+      case 'Youtube':
         if (await canLaunch('https://www.youtube.com/')) {
           try {
             await launch(
@@ -125,7 +123,7 @@ class CardLinks {
           showError(context);
         }
         break;
-      case 11:
+      case 'TikTok':
         if (await canLaunch('https://www.tiktok.com/pt_BR/')) {
           try {
             await launch(
@@ -150,15 +148,15 @@ class CardLinks {
     }
   }
 
-  Future abrirIosUrl(int value, context) async {
+  Future abrirIosUrl(String value, context) async {
     switch (value) {
-      case 1:
+      case 'Lembrete':
         Toast.show('Apenas uma nota padrão', context,
             duration: 4,
             backgroundColor: Colors.grey[300],
             textColor: Colors.black);
         break;
-      case 2:
+      case 'Facebook':
         if (await canLaunch('https://www.facebook.com/')) {
           await launch('facebook://', universalLinksOnly: true);
 
@@ -167,7 +165,7 @@ class CardLinks {
           showError(context);
         }
         break;
-      case 3:
+      case 'Instagram':
         if (await canLaunch('https://www.instagram.com/')) {
           await launch('instagram://', universalLinksOnly: true);
 
@@ -179,7 +177,7 @@ class CardLinks {
           showError(context);
         }
         break;
-      case 4:
+      case 'WhatsApp':
         if (await canLaunch('https://whatsapp.com/')) {
           await launch('whatsapp://', universalLinksOnly: false);
 
@@ -188,11 +186,20 @@ class CardLinks {
           showError(context);
         }
         break;
-      case 5:
+      case 'Youtube':
         if (await canLaunch('https://www.youtube.com/')) {
           await launch('youtube://', universalLinksOnly: false);
 
           await launch('https://www.youtube.com/');
+        } else {
+          showError(context);
+        }
+        break;
+      case 'TikTok':
+        if (await canLaunch('https://www.tiktok.com/pt_BR/')) {
+          await launch('musically://', forceSafariVC: false);
+
+          await launch('https://www.tiktok.com/pt_BR/');
         } else {
           showError(context);
         }
@@ -206,6 +213,65 @@ class CardLinks {
           showError(context);
         }
         break;
+    }
+  }
+}
+
+class DropdownLinks {
+  List<String> _iconNames = [
+    'Lembrete',
+    'Facebook',
+    'Instagram',
+    'WhatsApp',
+    'Youtube',
+    'Linkedin',
+    'Twitter',
+    'Pinterest',
+    'Google',
+    'Blog',
+    'TikTok',
+    'Snapchat',
+    'SlideShare',
+    'Flickr',
+  ].toList();
+
+  String _selectionIcon = 'Lembrete';
+  List<String> get iconNames => _iconNames;
+  String get selectionIcon => _selectionIcon;
+
+  set selectionIcon(String value) => _selectionIcon = selectionIcon;
+
+
+
+  atualizarIcon(String value) {
+    switch (value) {
+      case 'Lembrete':
+        _selectionIcon = value;
+        //icone que esta sendo mostrado
+        print('nota $_selectionIcon');
+        break;
+      case 'Facebook':
+        _selectionIcon = value;
+        print('face $_selectionIcon');
+        break;
+      case 'Instagram':
+        _selectionIcon = value;
+        print('insta $_selectionIcon');
+        break;
+      case 'Youtube':
+        _selectionIcon = value;
+        print('youTube $_selectionIcon');
+        break;
+      case 'WhatsApp':
+        _selectionIcon = value;
+        print('youTube $_selectionIcon');
+        break;
+      case 'TikTok':
+        _selectionIcon = value;
+        print('youTube $_selectionIcon');
+        break;
+      default:
+        _selectionIcon = 'Lembrete';
     }
   }
 }

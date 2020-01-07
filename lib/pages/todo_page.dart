@@ -1,7 +1,14 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:new_todo_trianons/bloc/dicas_provider.dart';
+import 'package:new_todo_trianons/bloc/open_links.dart';
 import 'package:new_todo_trianons/model/todo_model.dart';
+import 'package:new_todo_trianons/pages/tips_page.dart';
+import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 import 'package:new_todo_trianons/custom/Colors.dart';
 
@@ -15,81 +22,81 @@ class MyTodoPage extends StatefulWidget {
 
 class _MyTodoPageState extends State<MyTodoPage> {
   // Controle para os text fields para criar o Todo
-  TextEditingController _taskNameController;
-  TextEditingController _taskNoteController;
+  TextEditingController _taskNameController = TextEditingController();
+  TextEditingController _taskNoteController = TextEditingController();
 
   final TodoCrud crudOperations = TodoCrud();
 
   final tasksBox = Hive.box('tasks');
 
-  @override
-  initState() {
-    _taskNoteController = TextEditingController();
-    _taskNameController = TextEditingController();
-    super.initState();
-  }
+  final CardLinks todosIcons = CardLinks();
+  DropdownLinks dropdownState = DropdownLinks();
 
   @override
   Widget build(BuildContext context) {
     final phoneW = MediaQuery.of(context).size.width;
     final phoneH = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 7.0,
-        flexibleSpace: Container(
-          alignment: Alignment.bottomCenter,
-          child: Image.asset(
-            'assets/images/estrelas.png',
-          ),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: <Color>[
-                Cor().appBarGradientCima,
-                Cor().appBarGradientBaixo[700]
-              ],
+    return ValueListenableBuilder(
+        valueListenable: Hive.box('tasks').listenable(),
+        builder: (BuildContext context, Box tasksBox, Widget widget) {
+          return Scaffold(
+            appBar: AppBar(
+              elevation: 7.0,
+              flexibleSpace: Container(
+                alignment: Alignment.bottomCenter,
+                child: Image.asset(
+                  'assets/images/estrelas.png',
+                ),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: <Color>[
+                      Cor().appBarGradientCima,
+                      Cor().appBarGradientBaixo[700]
+                    ],
+                  ),
+                ),
+              ),
+              title: Flex(
+                direction: Axis.vertical,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  SizedBox(
+                    height: phoneH * 0.01,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset(
+                        'assets/images/logo.png',
+                        alignment: Alignment.center,
+                        scale: phoneW * 0.008,
+                        filterQuality: FilterQuality.high,
+                      )
+                    ],
+                  )
+                ],
+              ),
+              bottom: PreferredSize(
+                  preferredSize: Size(phoneW * 0.3, phoneH * 0.03),
+                  child: Container(
+                    height: 10,
+                  )),
             ),
-          ),
-        ),
-        title: Flex(
-          direction: Axis.vertical,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            SizedBox(
-              height: phoneH * 0.01,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  'assets/images/logo.png',
-                  alignment: Alignment.center,
-                  scale: phoneW * 0.008,
-                  filterQuality: FilterQuality.high,
-                )
-              ],
-            )
-          ],
-        ),
-        bottom: PreferredSize(
-            preferredSize: Size(phoneW * 0.3, phoneH * 0.03),
-            child: Container(
-              height: 10,
-            )),
-      ),
-      body: _beforeTodoList(context),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //tasksBox.clear();
-          _openTodoDialog(null);
-        },
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+            body: _beforeTodoList(context),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                //tasksBox.clear();
+                _openTodoDialog(null);
+              },
+              tooltip: 'Increment',
+              child: Icon(Icons.add),
+            ), // This trailing comma makes auto-formatting nicer for build methods.
+          );
+        });
   }
 
   Widget _beforeTodoList(BuildContext context) {
@@ -113,7 +120,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
             margin: EdgeInsets.only(left: phoneW / 20.0),
             padding: EdgeInsets.all(10),
             child: Text(
-              "Tem ${tasksBox.values.where((todo) => todo.isDone == false).toList().length} tarefas",
+              "${tasksBox.values.where((todo) => todo.isDone == false).toList().length} Tarefas",
               style: TextStyle(color: Colors.grey[700]),
             ),
           ),
@@ -157,7 +164,8 @@ class _MyTodoPageState extends State<MyTodoPage> {
                           name: todo.name,
                           notes: todo.notes,
                           index: index,
-                          isDone: todo.isDone));
+                          isDone: todo.isDone,
+                          icon: todo.icon));
                   // BLOC
                   return _todoList(todo);
                 }),
@@ -170,6 +178,10 @@ class _MyTodoPageState extends State<MyTodoPage> {
   Widget _todoList(TodoModel todo) {
     final phoneW = MediaQuery.of(context).size.width;
     final phoneH = MediaQuery.of(context).size.height;
+
+    final DicasState dicasProvider =
+        Provider.of<DicasState>(context, listen: false);
+
     return Card(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(phoneW * .07))),
@@ -195,12 +207,22 @@ class _MyTodoPageState extends State<MyTodoPage> {
                     color: Colors.yellow[900],
                   ),
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   CupertinoPageRoute(
-                    //     builder: (context) => Dicas(),
-                    //   ),
-                    // );
+                    dicasProvider.dicas = todo.icon;
+                    print(dicasProvider.dicas);
+
+                    if (dicasProvider.dicas != 'Lembrete') {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => Dicas(),
+                        ),
+                      );
+                    } else {
+                      return Toast.show('Nada para mostrar', context,
+                          duration: 3,
+                          backgroundColor: Colors.grey[300],
+                          textColor: Colors.black);
+                    }
                   },
                 ),
               ),
@@ -216,17 +238,17 @@ class _MyTodoPageState extends State<MyTodoPage> {
                     ),
                   ),
                   child: Icon(
-                    MyFlutterIcons.twitch,
+                    todosIcons.renderIcon(todo.icon),
                     color: Cor().customColor,
                     size: phoneW * .062,
                     //color: customColorBody,
                   ),
                   onPressed: () {
                     // BLOC
-                    // if (Platform.isAndroid)
-                    //   _todoLogic.abrirUrl(todo.taskIcon, context);
-                    // else if (Platform.isIOS)
-                    //   _todoLogic.abririOS(todo.taskIcon, context);
+                    if (Platform.isAndroid)
+                      todosIcons.abrirAndroidUrl(todo.icon, context);
+                    else if (Platform.isIOS)
+                      todosIcons.abrirIosUrl(todo.icon, context);
                     // BLOC
                   },
                 ),
@@ -317,36 +339,17 @@ class _MyTodoPageState extends State<MyTodoPage> {
     String taskName = '';
     String taskNote = '';
 
-    List<String> _iconNames = [
-      'Nota',
-      'Facebook',
-      'Instagram',
-      'WhatsApp',
-      'Youtube',
-      'Linkedin',
-      'Twitter',
-      'Pinterest',
-      'Google',
-      'Blog',
-      'TikTok',
-      'Snapchat',
-      'SlideShare',
-      'Flickr',
-    ].toList();
-    String _selectionIcon = 'Nota';
-    int _iconPriority = 1;
-
     if (todo != null) {
       taskName = todo.name;
       taskNote = todo.notes;
-
-      //_iconPriority = todo.icon;
+      dropdownState.atualizarIcon(todo.icon); // Provider resolve isso
 
       _taskNameController.text = todo.name;
       _taskNoteController.text = todo.notes;
     } else {
       taskName = '';
       taskNote = '';
+      dropdownState.atualizarIcon('Lembrete');
       _taskNoteController.clear();
       _taskNameController.clear();
     }
@@ -354,10 +357,12 @@ class _MyTodoPageState extends State<MyTodoPage> {
     return showDialog(
       context: context,
       barrierDismissible: true,
+
       builder: (BuildContext context) {
         return Form(
           key: _formKey,
           child: AlertDialog(
+
             contentPadding: EdgeInsets.only(left: 24, right: 24, bottom: 12.0),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(15.0))),
@@ -373,20 +378,22 @@ class _MyTodoPageState extends State<MyTodoPage> {
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isDense: true,
-                      items: _iconNames.map((String value) {
-                        return DropdownMenuItem(
+                      items: dropdownState.iconNames.map((String value) {
+                        return DropdownMenuItem<String>(
                           value: value,
                           child: Text(
                             value,
                           ),
                         );
                       }).toList(),
-                      value: _iconNames[todo == null
-                          ? (_iconPriority - 1)
-                          : (todo.icon - 1)],
+                      value: dropdownState.selectionIcon,
                       onChanged: (value) async {
-                        //_atualizarIcon(value);
-                        print(value + ' prioridade ' + '$_iconPriority');
+                        //await dropdownState.atualizarIcon(value);
+
+                        todo == null
+                            ? await dropdownState.atualizarIcon(value)
+                            : await dropdownState.atualizarIcon(todo.icon);
+                        print(dropdownState.selectionIcon);
                       },
                       isExpanded: true,
                       iconSize: 24.0,
@@ -452,16 +459,26 @@ class _MyTodoPageState extends State<MyTodoPage> {
                   }
                   if (todo == null) {
                     _formKey.currentState.save();
-                    final newTodo = TodoModel(name: taskName, notes: taskNote);
+                    // BLOC
+                    final newTodo = TodoModel(
+                        name: taskName,
+                        notes: taskNote,
+                        icon: dropdownState.selectionIcon);
                     crudOperations.createTodo(newTodo);
+                    // BLOC
                     _formKey.currentState.reset();
                   } else {
                     _formKey.currentState.save();
-                    final newTodo = TodoModel(name: taskName, notes: taskNote);
+                    // BLOC
+                    final newTodo = TodoModel(
+                        name: taskName,
+                        notes: taskNote,
+                        icon: dropdownState.selectionIcon);
                     crudOperations.updateTodo(todo.index, newTodo);
+                    // BLOC
                     _formKey.currentState.reset();
                   }
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(dropdownState.atualizarIcon('Lembrete'));
                 },
               ),
             ],

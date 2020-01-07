@@ -18,15 +18,7 @@ class AppDatabase {
 
     final db = Hive.init(dbPath);
 
-
     Hive.registerAdapter(TodoModelAdapter());
-
-    await Hive.openBox(
-      'tasks',
-      compactionStrategy: (int total, int deleted) {
-        return deleted > 10;
-      },
-    );
 
     print('abri o db');
     return db;
