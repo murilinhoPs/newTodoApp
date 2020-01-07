@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:new_todo_trianons/custom/my_flutter_app_icons.dart';
+import 'package:new_todo_trianons/model/todo_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:toast/toast.dart';
 
@@ -58,7 +61,7 @@ class CardLinks {
     }
   }
 
-  Future abrirAndroidUrl(String value, context) async {
+  Future _abrirAndroidUrl(String value, context) async {
     switch (value) {
       case 'Lembrete':
         Toast.show('Apenas uma nota lembrete', context,
@@ -148,7 +151,7 @@ class CardLinks {
     }
   }
 
-  Future abrirIosUrl(String value, context) async {
+  Future _abrirIosUrl(String value, context) async {
     switch (value) {
       case 'Lembrete':
         Toast.show('Apenas uma nota padrão', context,
@@ -215,63 +218,10 @@ class CardLinks {
         break;
     }
   }
-}
 
-class DropdownLinks {
-  List<String> _iconNames = [
-    'Lembrete',
-    'Facebook',
-    'Instagram',
-    'WhatsApp',
-    'Youtube',
-    'Linkedin',
-    'Twitter',
-    'Pinterest',
-    'Google',
-    'Blog',
-    'TikTok',
-    'Snapchat',
-    'SlideShare',
-    'Flickr',
-  ].toList();
-
-  String _selectionIcon = 'Lembrete';
-  List<String> get iconNames => _iconNames;
-  String get selectionIcon => _selectionIcon;
-
-  set selectionIcon(String value) => _selectionIcon = selectionIcon;
-
-
-
-  atualizarIcon(String value) {
-    switch (value) {
-      case 'Lembrete':
-        _selectionIcon = value;
-        //icone que esta sendo mostrado
-        print('nota $_selectionIcon');
-        break;
-      case 'Facebook':
-        _selectionIcon = value;
-        print('face $_selectionIcon');
-        break;
-      case 'Instagram':
-        _selectionIcon = value;
-        print('insta $_selectionIcon');
-        break;
-      case 'Youtube':
-        _selectionIcon = value;
-        print('youTube $_selectionIcon');
-        break;
-      case 'WhatsApp':
-        _selectionIcon = value;
-        print('youTube $_selectionIcon');
-        break;
-      case 'TikTok':
-        _selectionIcon = value;
-        print('youTube $_selectionIcon');
-        break;
-      default:
-        _selectionIcon = 'Lembrete';
-    }
+  Future platformOpenUrl(BuildContext context, TodoModel todo) async {
+    if (Platform.isAndroid)
+      _abrirAndroidUrl(todo.icon, context);
+    else if (Platform.isIOS) _abrirIosUrl(todo.icon, context);
   }
 }

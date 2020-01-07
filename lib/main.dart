@@ -6,10 +6,12 @@ import 'package:new_todo_trianons/pages/todo_page.dart';
 import 'package:provider/provider.dart';
 
 import 'bloc/dicas_provider.dart';
+import 'bloc/drop_icons_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppDatabase.instance.database;
+  await Hive.openBox('indices');
 
   runApp(MyApp());
 }
@@ -25,6 +27,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<DicasState>.value(value: DicasState()),
+        ChangeNotifierProvider<DropdownLinks>.value(value: DropdownLinks()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

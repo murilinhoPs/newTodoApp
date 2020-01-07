@@ -18,7 +18,7 @@ class TodoModel{
   @HiveField(5)
   String icon;
 
-  TodoModel({this.name, this.notes, this.icon = 'Lembrete', this.isDone = false, this.index});
+  TodoModel({this.name, this.notes, this.icon = 'Lembrete', this.isDone = false, this.index = 0});
 
 
 }

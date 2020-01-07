@@ -1,11 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:new_todo_trianons/bloc/dicas_provider.dart';
+import 'package:new_todo_trianons/bloc/drop_icons_provider.dart';
 import 'package:new_todo_trianons/bloc/open_links.dart';
+import 'package:new_todo_trianons/database/crud_indices.dart';
 import 'package:new_todo_trianons/model/todo_model.dart';
 import 'package:new_todo_trianons/pages/tips_page.dart';
 import 'package:provider/provider.dart';
@@ -21,16 +21,25 @@ class MyTodoPage extends StatefulWidget {
 }
 
 class _MyTodoPageState extends State<MyTodoPage> {
-  // Controle para os text fields para criar o Todo
   TextEditingController _taskNameController = TextEditingController();
   TextEditingController _taskNoteController = TextEditingController();
 
   final TodoCrud crudOperations = TodoCrud();
+  final _crudIndices = TodoIndicesCrud();
 
   final tasksBox = Hive.box('tasks');
 
+
   final CardLinks todosIcons = CardLinks();
-  DropdownLinks dropdownState = DropdownLinks();
+
+  int testIndex = 0;
+
+  @override
+  void initState() {
+    Hive.box('indices').clear();
+    tasksBox.clear();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,10 +90,11 @@ class _MyTodoPageState extends State<MyTodoPage> {
                 ],
               ),
               bottom: PreferredSize(
-                  preferredSize: Size(phoneW * 0.3, phoneH * 0.03),
-                  child: Container(
-                    height: 10,
-                  )),
+                preferredSize: Size(phoneW * 0.3, phoneH * 0.03),
+                child: Container(
+                  height: 10,
+                ),
+              ),
             ),
             body: _beforeTodoList(context),
             floatingActionButton: FloatingActionButton(
@@ -94,7 +104,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
               },
               tooltip: 'Increment',
               child: Icon(Icons.add),
-            ), // This trailing comma makes auto-formatting nicer for build methods.
+            ),
           );
         });
   }
@@ -103,11 +113,9 @@ class _MyTodoPageState extends State<MyTodoPage> {
     final phoneW = MediaQuery.of(context).size.width;
     final phoneH = MediaQuery.of(context).size.height;
 
-    final valIsDone =
-        tasksBox.values.where((todo) => todo.isDone == true).toList();
-
-    final percent =
-        tasksBox.length > 0 ? ((valIsDone.length / tasksBox.length) * 100) : 0;
+    final percent = tasksBox.length > 0
+        ? ((crudOperations.filterTodo().length / tasksBox.length) * 100)
+        : 0;
 
     return Center(
       child: Column(
@@ -120,53 +128,41 @@ class _MyTodoPageState extends State<MyTodoPage> {
             margin: EdgeInsets.only(left: phoneW / 20.0),
             padding: EdgeInsets.all(10),
             child: Text(
-              "${tasksBox.values.where((todo) => todo.isDone == false).toList().length} Tarefas",
+              "${crudOperations.filterTodo().length} Tarefas",
               style: TextStyle(color: Colors.grey[700]),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(),
-            child: Row(
-              children: <Widget>[
-                SizedBox(
-                  width: phoneW * 0.03,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    height: phoneH * .002,
-                    child: LinearProgressIndicator(
-                      backgroundColor: Colors.grey[300],
-                      value: (percent / 100),
-                    ),
+          Row(
+            children: <Widget>[
+              SizedBox(
+                width: phoneW * 0.03,
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  height: phoneH * .002,
+                  child: LinearProgressIndicator(
+                    backgroundColor: Colors.grey[300],
+                    value: (percent / 100),
                   ),
                 ),
-                SizedBox(
-                  width: phoneW * .01,
-                ),
-                //Text('${percent.floor()}%',style: TextStyle(color: Colors.grey[700]))
-              ],
-            ),
+              ),
+              SizedBox(
+                width: phoneW * .01,
+              ),
+              //Text('${percent.floor()}%',style: TextStyle(color: Colors.grey[700]))
+            ],
           ),
-          Flexible(
+          Expanded(
             child: ListView.builder(
-                reverse: false,
                 shrinkWrap: true,
                 itemCount: tasksBox.length,
                 itemBuilder: (context, index) {
-                  // BLOC
-                  // read
                   final todo = crudOperations.readTodo(index);
-                  // update the index
-                  crudOperations.updateTodo(
-                      index,
-                      TodoModel(
-                          name: todo.name,
-                          notes: todo.notes,
-                          index: index,
-                          isDone: todo.isDone,
-                          icon: todo.icon));
-                  // BLOC
+
+                  print('ListView.builder');
+                  print('teste: $testIndex');
+                  print('saveIndex: ${_crudIndices.readIndex()}');
                   return _todoList(todo);
                 }),
           ),
@@ -208,7 +204,6 @@ class _MyTodoPageState extends State<MyTodoPage> {
                   ),
                   onPressed: () {
                     dicasProvider.dicas = todo.icon;
-                    print(dicasProvider.dicas);
 
                     if (dicasProvider.dicas != 'Lembrete') {
                       Navigator.push(
@@ -241,15 +236,9 @@ class _MyTodoPageState extends State<MyTodoPage> {
                     todosIcons.renderIcon(todo.icon),
                     color: Cor().customColor,
                     size: phoneW * .062,
-                    //color: customColorBody,
                   ),
                   onPressed: () {
-                    // BLOC
-                    if (Platform.isAndroid)
-                      todosIcons.abrirAndroidUrl(todo.icon, context);
-                    else if (Platform.isIOS)
-                      todosIcons.abrirIosUrl(todo.icon, context);
-                    // BLOC
+                    todosIcons.platformOpenUrl(context, todo);
                   },
                 ),
               ),
@@ -312,10 +301,10 @@ class _MyTodoPageState extends State<MyTodoPage> {
           crudOperations.updateTodo(
               todo.index,
               TodoModel(
-                name: todo.name,
-                notes: todo.notes,
-                isDone: !todo.isDone,
-              ));
+                  name: todo.name,
+                  notes: todo.notes,
+                  isDone: !todo.isDone,
+                  icon: todo.icon));
           // BLOC
         },
       ),
@@ -323,12 +312,15 @@ class _MyTodoPageState extends State<MyTodoPage> {
           color: Colors.red,
           icon: Icon(Icons.delete_outline),
           onPressed: () {
+            if(tasksBox.length <= 0){
+              _crudIndices.updateIndex(0);
+              testIndex = 0;
+            }
             // BLOC
             crudOperations.deleteTodo(todo.index);
             // BLOC
           }),
       onTap: () {
-        print(todo.index);
         _openTodoDialog(todo);
       },
     );
@@ -338,6 +330,8 @@ class _MyTodoPageState extends State<MyTodoPage> {
     final _formKey = GlobalKey<FormState>();
     String taskName = '';
     String taskNote = '';
+    final DropdownLinks dropdownState =
+        Provider.of<DropdownLinks>(context, listen: false);
 
     if (todo != null) {
       taskName = todo.name;
@@ -357,133 +351,143 @@ class _MyTodoPageState extends State<MyTodoPage> {
     return showDialog(
       context: context,
       barrierDismissible: true,
-
       builder: (BuildContext context) {
-        return Form(
-          key: _formKey,
-          child: AlertDialog(
-
-            contentPadding: EdgeInsets.only(left: 24, right: 24, bottom: 12.0),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))),
-            title: Text(
-              'Seu lembrete',
-              style: TextStyle(fontFamily: ' Nunito'),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                InputDecorator(
-                  decoration: InputDecoration(labelText: 'Redes Sociais'),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      isDense: true,
-                      items: dropdownState.iconNames.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
+        return Consumer<DropdownLinks>(builder: (context, provider, widget) {
+          return Form(
+            key: _formKey,
+            child: AlertDialog(
+              contentPadding:
+                  EdgeInsets.only(left: 24, right: 24, bottom: 12.0),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15.0))),
+              title: Text(
+                'Seu lembrete',
+                style: TextStyle(fontFamily: ' Nunito'),
+              ),
+              content: ListView(
+                shrinkWrap: true,
+                children: <Widget>[
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      InputDecorator(
+                        decoration: InputDecoration(labelText: 'Redes Sociais'),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            isDense: true,
+                            items: dropdownState.iconNames.map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                ),
+                              );
+                            }).toList(),
+                            value: dropdownState.selectionIcon,
+                            onChanged: (value) async {
+                              await dropdownState.atualizarIcon(value);
+                            },
+                            isExpanded: true,
+                            iconSize: 24.0,
                           ),
-                        );
-                      }).toList(),
-                      value: dropdownState.selectionIcon,
-                      onChanged: (value) async {
-                        //await dropdownState.atualizarIcon(value);
-
-                        todo == null
-                            ? await dropdownState.atualizarIcon(value)
-                            : await dropdownState.atualizarIcon(todo.icon);
-                        print(dropdownState.selectionIcon);
-                      },
-                      isExpanded: true,
-                      iconSize: 24.0,
-                    ),
+                        ),
+                      ),
+                      // Task name
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: TextField(
+                              cursorColor: Cor().customColor,
+                              controller: _taskNameController,
+                              autofocus: true,
+                              enableInteractiveSelection: true,
+                              enableSuggestions: true,
+                              decoration: InputDecoration(
+                                  focusColor: Cor().customColor,
+                                  labelStyle:
+                                      TextStyle(color: Cor().customColor),
+                                  labelText: 'tarefa',
+                                  hintText: 'sua tarefa'),
+                              onChanged: (value) {
+                                taskName = value;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      // Task note
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: TextField(
+                              cursorColor: Cor().customColor,
+                              maxLines: null,
+                              enableInteractiveSelection: true,
+                              controller: _taskNoteController,
+                              decoration: InputDecoration(
+                                  labelStyle:
+                                      TextStyle(color: Cor().customColor),
+                                  labelText: 'anotações',
+                                  hintText: 'Adicione anotações na sua tarefa'),
+                              onChanged: (value) {
+                                taskNote = value;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-                // Task name
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        cursorColor: Cor().customColor,
-                        controller: _taskNameController,
-                        autofocus: true,
-                        enableInteractiveSelection: true,
-                        decoration: InputDecoration(
-                            focusColor: Cor().customColor,
-                            labelStyle: TextStyle(color: Cor().customColor),
-                            labelText: 'tarefa',
-                            hintText: 'sua tarefa'),
-                        onChanged: (value) {
-                          taskName = value;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                // Task note
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        cursorColor: Cor().customColor,
-                        maxLines: null,
-                        enableInteractiveSelection: true,
-                        controller: _taskNoteController,
-                        decoration: InputDecoration(
-                            labelStyle: TextStyle(color: Cor().customColor),
-                            labelText: 'anotações',
-                            hintText: 'Adicione anotações na sua tarefa'),
-                        onChanged: (value) {
-                          taskNote = value;
-                        },
-                      ),
-                    ),
-                  ],
+                ],
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  textColor: Cor().customColor,
+                  // O texto muda de acordo com o todo, se vai criar um novo ou editar
+                  child: todo == null
+                      ? Text('Criar nova tarefa')
+                      : Text('Editar tarefa'),
+                  onPressed: () {
+                    if (taskName.trim().length < 1) {
+                      Toast.show('Nada escrito!', context,
+                          duration: 4,
+                          backgroundColor: Colors.grey[300],
+                          textColor: Colors.black);
+                    }
+                    if (todo == null) {
+                      _formKey.currentState.save();
+                      // BLOC
+                      final newTodo = TodoModel(
+                          name: taskName,
+                          notes: taskNote,
+                          icon: dropdownState.selectionIcon,
+                          index: testIndex++);
+                      crudOperations.createTodo(newTodo);
+                      _crudIndices.updateIndex(testIndex);
+                      // BLOC
+                      _formKey.currentState.reset();
+                    } else {
+                      _formKey.currentState.save();
+                      // BLOC
+                      final newTodo = TodoModel(
+                          name: taskName,
+                          notes: taskNote,
+                          icon: dropdownState.selectionIcon,
+                          index: testIndex++);
+
+                      crudOperations.updateTodo(todo.index, newTodo);
+                      _crudIndices.updateIndex(testIndex);
+                      // BLOC
+                      _formKey.currentState.reset();
+                    }
+                    Navigator.of(context)
+                        .pop(dropdownState.atualizarIcon('Lembrete'));
+                  },
                 ),
               ],
             ),
-            actions: <Widget>[
-              FlatButton(
-                textColor: Cor().customColor,
-                // O texto muda de acordo com o todo, se vai criar um novo ou editar
-                child: todo == null
-                    ? Text('Criar nova tarefa')
-                    : Text('Editar tarefa'),
-                onPressed: () {
-                  if (taskName.trim().length < 1) {
-                    Toast.show('Nada escrito!', context,
-                        duration: 4,
-                        backgroundColor: Colors.grey[300],
-                        textColor: Colors.black);
-                  }
-                  if (todo == null) {
-                    _formKey.currentState.save();
-                    // BLOC
-                    final newTodo = TodoModel(
-                        name: taskName,
-                        notes: taskNote,
-                        icon: dropdownState.selectionIcon);
-                    crudOperations.createTodo(newTodo);
-                    // BLOC
-                    _formKey.currentState.reset();
-                  } else {
-                    _formKey.currentState.save();
-                    // BLOC
-                    final newTodo = TodoModel(
-                        name: taskName,
-                        notes: taskNote,
-                        icon: dropdownState.selectionIcon);
-                    crudOperations.updateTodo(todo.index, newTodo);
-                    // BLOC
-                    _formKey.currentState.reset();
-                  }
-                  Navigator.of(context).pop(dropdownState.atualizarIcon('Lembrete'));
-                },
-              ),
-            ],
-          ),
-        );
+          );
+        });
       },
     );
   }
@@ -491,7 +495,8 @@ class _MyTodoPageState extends State<MyTodoPage> {
   @override
   void dispose() {
     Hive.box('tasks').compact();
-    Hive.close();
+    Hive.box('tasks').close();
+    Hive.box('indices').close();
     super.dispose();
   }
 }

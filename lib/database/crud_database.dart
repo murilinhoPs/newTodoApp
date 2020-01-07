@@ -6,6 +6,7 @@ class TodoCrud {
 
   void createTodo(TodoModel todo) {
     _tasksBox.add(todo);
+   
     //print("Task name: ${todo.name}, Notes: ${todo.notes}");
   }
 
@@ -19,5 +20,9 @@ class TodoCrud {
 
   void deleteTodo(int index) {
     _tasksBox.deleteAt(index);
+  }
+
+  List<dynamic> filterTodo(){
+    return _tasksBox.values.where((todo) => todo.isDone == true).toList();
   }
 }
