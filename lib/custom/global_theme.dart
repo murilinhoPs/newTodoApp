@@ -5,9 +5,11 @@ import 'Colors.dart';
 class MyTheme {
   static final ThemeData globalTheme = ThemeData(
       fontFamily: 'Nunito',
+      brightness: Brightness.light,
       primaryColor: Colors.white,
+      dividerColor: Colors.grey[400],
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Cor().appBarGradientCima, elevation: 7.0),
+          backgroundColor: Cor().appBarGradientCima, elevation: 3.0),
       iconTheme: IconThemeData(
           color: Cor()
               .customColor[600]), //IconThemeData(color: Colors.purple[600]),
@@ -15,7 +17,7 @@ class MyTheme {
       accentColor: Cor().customColorBody, //Colors.purple[600],
       textTheme: TextTheme(
         body1: TextStyle(
-            fontFamily: 'Nunito', fontSize: 16, color: Cor().customColor),
+            fontFamily: 'Nunito', fontSize: 18, color: Cor().customColor),
         subtitle: TextStyle(
             decorationColor: Cor().customColor,
             color: Cor().customColor,
@@ -28,6 +30,6 @@ class MyTheme {
             fontFamily: 'Nunito'),
       ),
       cardTheme: CardTheme(
-        elevation: 2.0,
+        elevation: 4.0,
       ));
 }

@@ -30,20 +30,19 @@ dependencies:
   toast: ^0.1.5
   url_launcher: ^5.4.1
   provider: ^4.0.1
+  flutter_speed_dial: ^1.2.5
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter 
+    sdk: flutter
   hive_generator: ^0.7.0
   build_runner:
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -67,11 +66,11 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-      - family: Nunito
-        fonts:
-          - asset: fonts/Nunito.ttf
-      - family: MyFlutterIcons
-        fonts:
-          - asset: fonts/MyFlutterIcons.ttf
+    - family: Nunito
+      fonts:
+        - asset: fonts/Nunito.ttf
+    - family: MyFlutterIcons
+      fonts:
+        - asset: fonts/MyFlutterIcons.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

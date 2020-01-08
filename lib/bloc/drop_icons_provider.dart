@@ -26,30 +26,10 @@ class DropdownLinks extends ChangeNotifier {
   String get selectionIcon => _selectionIcon;
 
   atualizarIcon(String value) {
-    switch (value) {
-      case 'Lembrete':
-        _selectionIcon = value;
-        break;
-      case 'Facebook':
-        _selectionIcon = value;
-        break;
-      case 'Instagram':
-        _selectionIcon = value;
-        break;
-      case 'Youtube':
-        _selectionIcon = value;
-        break;
-      case 'WhatsApp':
-        _selectionIcon = value;
-        break;
-      case 'TikTok':
-        _selectionIcon = value;
-        break;
-      default:
-        _selectionIcon = 'Lembrete';
-    }
+    _selectionIcon = value;
+
     notifyListeners();
 
-    print('ICON: $_selectionIcon');
+    //print('ICON: $_selectionIcon');
   }
 }

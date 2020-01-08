@@ -11,7 +11,7 @@ import 'bloc/drop_icons_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppDatabase.instance.database;
-  await Hive.openBox('indices');
+  //await Hive.openBox('indices');
 
   runApp(MyApp());
 }
@@ -39,7 +39,9 @@ class _MyAppState extends State<MyApp> {
               compactionStrategy: (int total, int deleted) {
                 return deleted > 10;
               },
-            ),
+            )
+                .then((_) => Hive.openBox('indices'))
+                .then((_) => Hive.box('indices').put('tasksIndices', 0)),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasError) {

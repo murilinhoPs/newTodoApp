@@ -9,7 +9,7 @@ import 'package:toast/toast.dart';
 class CardLinks {
   showError(BuildContext context) {
     return Toast.show('Não foi possível comunicar com o servidor', context,
-        duration: 3,
+        duration: 2,
         backgroundColor: Colors.grey[300],
         textColor: Colors.black);
   }
@@ -65,7 +65,7 @@ class CardLinks {
     switch (value) {
       case 'Lembrete':
         Toast.show('Apenas uma nota lembrete', context,
-            duration: 4,
+            duration: 2,
             backgroundColor: Colors.grey[300],
             textColor: Colors.black);
         break;
@@ -155,7 +155,7 @@ class CardLinks {
     switch (value) {
       case 'Lembrete':
         Toast.show('Apenas uma nota padrão', context,
-            duration: 4,
+            duration: 2,
             backgroundColor: Colors.grey[300],
             textColor: Colors.black);
         break;
@@ -174,7 +174,6 @@ class CardLinks {
 
           await launch(
             'https://www.instagram.com/',
-            forceSafariVC: false,
           );
         } else {
           showError(context);

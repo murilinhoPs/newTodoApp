@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:new_todo_trianons/bloc/dicas_provider.dart';
@@ -29,15 +30,16 @@ class _MyTodoPageState extends State<MyTodoPage> {
 
   final tasksBox = Hive.box('tasks');
 
-
   final CardLinks todosIcons = CardLinks();
 
   int testIndex = 0;
 
   @override
   void initState() {
-    Hive.box('indices').clear();
-    tasksBox.clear();
+    //Hive.box('indices').clear();
+    //tasksBox.clear();
+    // _crudIndices.updateIndex(0);
+    testIndex = _crudIndices.readIndex();
     super.initState();
   }
 
@@ -51,7 +53,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
         builder: (BuildContext context, Box tasksBox, Widget widget) {
           return Scaffold(
             appBar: AppBar(
-              elevation: 7.0,
+              elevation: 0.0,
               flexibleSpace: Container(
                 alignment: Alignment.bottomCenter,
                 child: Image.asset(
@@ -97,13 +99,26 @@ class _MyTodoPageState extends State<MyTodoPage> {
               ),
             ),
             body: _beforeTodoList(context),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                //tasksBox.clear();
-                _openTodoDialog(null);
-              },
-              tooltip: 'Increment',
-              child: Icon(Icons.add),
+            floatingActionButton: SpeedDial(
+              child: Icon(Icons.note_add),
+              //animatedIcon: AnimatedIcons.menu_close,
+              children: [
+                SpeedDialChild(
+                    child: Icon(Icons.create),
+                    label: 'Criar novo',
+                    onTap: () => _openTodoDialog(null)),
+                SpeedDialChild(
+                    child: Icon(Icons.add),
+                    elevation: 0.0,
+                    onTap: () {
+                      Toast.show('Não interativo...', context,
+                          duration: 2,
+                          backgroundColor: Colors.grey[300],
+                          textColor: Colors.black);
+                    },
+                    //label: 'Adicionar novo',
+                    backgroundColor: Colors.grey[300]),
+              ],
             ),
           );
         });
@@ -128,7 +143,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
             margin: EdgeInsets.only(left: phoneW / 20.0),
             padding: EdgeInsets.all(10),
             child: Text(
-              "${crudOperations.filterTodo().length} Tarefas",
+              "${crudOperations.filterTodo().length} Tarefas prontas",
               style: TextStyle(color: Colors.grey[700]),
             ),
           ),
@@ -140,6 +155,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
               Expanded(
                 flex: 1,
                 child: Container(
+                  margin: EdgeInsets.all(8.0),
                   height: phoneH * .002,
                   child: LinearProgressIndicator(
                     backgroundColor: Colors.grey[300],
@@ -154,18 +170,19 @@ class _MyTodoPageState extends State<MyTodoPage> {
             ],
           ),
           Expanded(
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: tasksBox.length,
-                itemBuilder: (context, index) {
-                  final todo = crudOperations.readTodo(index);
+              child: tasksBox.length > 0
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: tasksBox.length,
+                      itemBuilder: (context, index) {
+                        final todo = crudOperations.readTodo(index);
+                        if (tasksBox.length <= 0) _crudIndices.updateIndex(0);
 
-                  print('ListView.builder');
-                  print('teste: $testIndex');
-                  print('saveIndex: ${_crudIndices.readIndex()}');
-                  return _todoList(todo);
-                }),
-          ),
+                        print('teste: $testIndex');
+                        print('saveIndex: ${_crudIndices.readIndex()}');
+                        return _todoList(todo);
+                      })
+                  : Center(child: Text('Escreva sua primeira tarefa'))),
         ],
       ),
     );
@@ -214,7 +231,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
                       );
                     } else {
                       return Toast.show('Nada para mostrar', context,
-                          duration: 3,
+                          duration: 2,
                           backgroundColor: Colors.grey[300],
                           textColor: Colors.black);
                     }
@@ -263,14 +280,14 @@ class _MyTodoPageState extends State<MyTodoPage> {
                     decoration: TextDecoration.lineThrough,
                     decorationColor: Cor().customColorBody,
                     color: Colors.grey[500],
-                    fontSize: phoneW * .045),
+                    fontSize: phoneW * .05),
               ),
             )
           : Center(
               child: Text(
                 todo.name,
                 style: TextStyle(
-                    color: Cor().customColorBody, fontSize: phoneW * .045),
+                    color: Cor().customColorBody, fontSize: phoneW * .05),
               ),
             ),
       subtitle: todo.isDone
@@ -289,7 +306,8 @@ class _MyTodoPageState extends State<MyTodoPage> {
               child: Text(
                 todo.notes,
                 style: TextStyle(
-                    color: Cor().customColorBody, fontSize: phoneW * .045),
+                    color: Cor().customColorBody.shade700,
+                    fontSize: phoneW * .045),
               ),
             ),
       leading: IconButton(
@@ -301,6 +319,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
           crudOperations.updateTodo(
               todo.index,
               TodoModel(
+                  index: todo.index,
                   name: todo.name,
                   notes: todo.notes,
                   isDone: !todo.isDone,
@@ -312,10 +331,8 @@ class _MyTodoPageState extends State<MyTodoPage> {
           color: Colors.red,
           icon: Icon(Icons.delete_outline),
           onPressed: () {
-            if(tasksBox.length <= 0){
-              _crudIndices.updateIndex(0);
-              testIndex = 0;
-            }
+            testIndex--;
+            _crudIndices.updateIndex(testIndex);
             // BLOC
             crudOperations.deleteTodo(todo.index);
             // BLOC
@@ -361,11 +378,14 @@ class _MyTodoPageState extends State<MyTodoPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15.0))),
               title: Text(
-                'Seu lembrete',
+                todo == null ? 'Crie sua tarefa' : 'Edite sua tarefa',
                 style: TextStyle(fontFamily: ' Nunito'),
               ),
-              content: ListView(
-                shrinkWrap: true,
+              content: Flex(
+                direction: Axis.vertical,
+                mainAxisSize: MainAxisSize.min,
+                //addRepaintBoundaries: true,
+                //shrinkWrap: true,
                 children: <Widget>[
                   Column(
                     mainAxisSize: MainAxisSize.min,
@@ -384,8 +404,8 @@ class _MyTodoPageState extends State<MyTodoPage> {
                               );
                             }).toList(),
                             value: dropdownState.selectionIcon,
-                            onChanged: (value) async {
-                              await dropdownState.atualizarIcon(value);
+                            onChanged: (value) {
+                              dropdownState.atualizarIcon(value);
                             },
                             isExpanded: true,
                             iconSize: 24.0,
@@ -450,7 +470,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
                   onPressed: () {
                     if (taskName.trim().length < 1) {
                       Toast.show('Nada escrito!', context,
-                          duration: 4,
+                          duration: 2,
                           backgroundColor: Colors.grey[300],
                           textColor: Colors.black);
                     }
@@ -473,7 +493,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
                           name: taskName,
                           notes: taskNote,
                           icon: dropdownState.selectionIcon,
-                          index: testIndex++);
+                          index: todo.index);
 
                       crudOperations.updateTodo(todo.index, newTodo);
                       _crudIndices.updateIndex(testIndex);
