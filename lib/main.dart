@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:new_todo_trianons/custom/global_theme.dart';
 import 'package:new_todo_trianons/database/app_database.dart';
@@ -13,7 +14,8 @@ void main() async {
   await AppDatabase.instance.database;
   //await Hive.openBox('indices');
 
-  runApp(MyApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatefulWidget {
