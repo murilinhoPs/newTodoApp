@@ -36,10 +36,8 @@ class _MyTodoPageState extends State<MyTodoPage> {
 
   @override
   void initState() {
-    //Hive.box('indices').clear();
-    //tasksBox.clear();
-    // _crudIndices.updateIndex(0);
-    testIndex = _crudIndices.readIndex();
+    _initialize();
+
     super.initState();
   }
 
@@ -48,80 +46,76 @@ class _MyTodoPageState extends State<MyTodoPage> {
     final phoneW = MediaQuery.of(context).size.width;
     final phoneH = MediaQuery.of(context).size.height;
 
-    return ValueListenableBuilder(
-        valueListenable: Hive.box('tasks').listenable(),
-        builder: (BuildContext context, Box tasksBox, Widget widget) {
-          return Scaffold(
-            appBar: AppBar(
-              elevation: 0.0,
-              flexibleSpace: Container(
-                alignment: Alignment.bottomCenter,
-                child: Image.asset(
-                  'assets/images/estrelas.png',
-                ),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: <Color>[
-                      Cor().appBarGradientCima,
-                      Cor().appBarGradientBaixo[700]
-                    ],
-                  ),
-                ),
-              ),
-              title: Flex(
-                direction: Axis.vertical,
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  SizedBox(
-                    height: phoneH * 0.01,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image.asset(
-                        'assets/images/logo.png',
-                        alignment: Alignment.center,
-                        scale: phoneW * 0.008,
-                        filterQuality: FilterQuality.high,
-                      )
-                    ],
-                  )
-                ],
-              ),
-              bottom: PreferredSize(
-                preferredSize: Size(phoneW * 0.3, phoneH * 0.03),
-                child: Container(
-                  height: 10,
-                ),
-              ),
-            ),
-            body: _beforeTodoList(context),
-            floatingActionButton: SpeedDial(
-              child: Icon(Icons.note_add),
-              //animatedIcon: AnimatedIcons.menu_close,
-              children: [
-                SpeedDialChild(
-                    child: Icon(Icons.create),
-                    label: 'Criar novo',
-                    onTap: () => _openTodoDialog(null)),
-                SpeedDialChild(
-                    child: Icon(Icons.add),
-                    elevation: 0.0,
-                    onTap: () {
-                      Toast.show('Não interativo...', context,
-                          duration: 2,
-                          backgroundColor: Colors.grey[300],
-                          textColor: Colors.black);
-                    },
-                    //label: 'Adicionar novo',
-                    backgroundColor: Colors.grey[300]),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        flexibleSpace: Container(
+          alignment: Alignment.bottomCenter,
+          child: Image.asset(
+            'assets/images/estrelas.png',
+          ),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: <Color>[
+                Cor().appBarGradientCima,
+                Cor().appBarGradientBaixo[700]
               ],
             ),
-          );
-        });
+          ),
+        ),
+        title: Flex(
+          direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            SizedBox(
+              height: phoneH * 0.01,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets/images/logo.png',
+                  alignment: Alignment.center,
+                  scale: phoneW * 0.008,
+                  filterQuality: FilterQuality.high,
+                )
+              ],
+            )
+          ],
+        ),
+        bottom: PreferredSize(
+          preferredSize: Size(phoneW * 0.3, phoneH * 0.03),
+          child: Container(
+            height: 10,
+          ),
+        ),
+      ),
+      body: _beforeTodoList(context),
+      floatingActionButton: SpeedDial(
+        child: Icon(Icons.note_add),
+        //animatedIcon: AnimatedIcons.menu_close,
+        children: [
+          SpeedDialChild(
+              child: Icon(Icons.create),
+              label: 'Criar novo',
+              onTap: () => _openTodoDialog(null)),
+          SpeedDialChild(
+              child: Icon(Icons.add),
+              elevation: 0.0,
+              onTap: () {
+                Toast.show('Não interativo...', context,
+                    duration: 2,
+                    backgroundColor: Colors.grey[300],
+                    textColor: Colors.black);
+              },
+              //label: 'Adicionar novo',
+              backgroundColor: Colors.grey[300]),
+        ],
+      ),
+    );
   }
 
   Widget _beforeTodoList(BuildContext context) {
@@ -132,58 +126,65 @@ class _MyTodoPageState extends State<MyTodoPage> {
         ? ((crudOperations.filterTodo().length / tasksBox.length) * 100)
         : 0;
 
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(
-            height: phoneH * 0.02,
-          ),
-          Container(
-            margin: EdgeInsets.only(left: phoneW / 20.0),
-            padding: EdgeInsets.all(10),
-            child: Text(
-              "${crudOperations.filterTodo().length} Tarefas prontas",
-              style: TextStyle(color: Colors.grey[700]),
+    return ValueListenableBuilder(
+      valueListenable: Hive.box('tasks').listenable(),
+      builder: (BuildContext context, Box tasksBox, Widget widget) => Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: phoneH * 0.02,
             ),
-          ),
-          Row(
-            children: <Widget>[
-              SizedBox(
-                width: phoneW * 0.03,
+            Container(
+              margin: EdgeInsets.only(left: phoneW / 20.0),
+              padding: EdgeInsets.all(10),
+              child: Text(
+                "${crudOperations.filterTodo().length} Tarefas prontas",
+                style: TextStyle(color: Colors.grey[700]),
               ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  margin: EdgeInsets.all(8.0),
-                  height: phoneH * .002,
-                  child: LinearProgressIndicator(
-                    backgroundColor: Colors.grey[300],
-                    value: (percent / 100),
+            ),
+            Row(
+              children: <Widget>[
+                SizedBox(
+                  width: phoneW * 0.03,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    margin: EdgeInsets.all(8.0),
+                    height: phoneH * .002,
+                    child: LinearProgressIndicator(
+                      backgroundColor: Colors.grey[300],
+                      value: (percent / 100),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: phoneW * .01,
-              ),
-              //Text('${percent.floor()}%',style: TextStyle(color: Colors.grey[700]))
-            ],
-          ),
-          Expanded(
+                SizedBox(
+                  width: phoneW * .01,
+                ),
+                //Text('${percent.floor()}%',style: TextStyle(color: Colors.grey[700]))
+              ],
+            ),
+            Expanded(
               child: tasksBox.length > 0
                   ? ListView.builder(
                       shrinkWrap: true,
                       itemCount: tasksBox.length,
                       itemBuilder: (context, index) {
                         final todo = crudOperations.readTodo(index);
-                        if (tasksBox.length <= 0) _crudIndices.updateIndex(0);
 
-                        print('teste: $testIndex');
-                        print('saveIndex: ${_crudIndices.readIndex()}');
+                        _verifyIndices(index, todo);
+
+                        // print('builderLenght: ${tasksBox.length}');
+                        // print('saveIndex: ${_crudIndices.readIndex()}');
                         return _todoList(todo);
                       })
-                  : Center(child: Text('Escreva sua primeira tarefa'))),
-        ],
+                  : Center(
+                      child: Text('Escreva sua primeira tarefa'),
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -299,7 +300,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
                     decoration: TextDecoration.lineThrough,
                     decorationColor: Cor().customColorBody,
                     color: Colors.grey[500],
-                    fontSize: phoneW * .045),
+                    fontSize: phoneW * .04),
               ),
             )
           : Center(
@@ -307,7 +308,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
                 todo.notes,
                 style: TextStyle(
                     color: Cor().customColorBody.shade700,
-                    fontSize: phoneW * .045),
+                    fontSize: phoneW * .04),
               ),
             ),
       leading: IconButton(
@@ -330,12 +331,13 @@ class _MyTodoPageState extends State<MyTodoPage> {
       trailing: IconButton(
           color: Colors.red,
           icon: Icon(Icons.delete_outline),
-          onPressed: () {
-            testIndex--;
-            _crudIndices.updateIndex(testIndex);
-            // BLOC
+          onPressed: () async {
             crudOperations.deleteTodo(todo.index);
-            // BLOC
+
+            await _crudIndices.updateIndex(_crudIndices.readIndex() - 1);
+            testIndex = _crudIndices.readIndex();
+
+            //print('test:$testIndex + indicesDb: ${_crudIndices.readIndex()}');
           }),
       onTap: () {
         _openTodoDialog(todo);
@@ -384,8 +386,6 @@ class _MyTodoPageState extends State<MyTodoPage> {
               content: Flex(
                 direction: Axis.vertical,
                 mainAxisSize: MainAxisSize.min,
-                //addRepaintBoundaries: true,
-                //shrinkWrap: true,
                 children: <Widget>[
                   Column(
                     mainAxisSize: MainAxisSize.min,
@@ -496,7 +496,6 @@ class _MyTodoPageState extends State<MyTodoPage> {
                           index: todo.index);
 
                       crudOperations.updateTodo(todo.index, newTodo);
-                      _crudIndices.updateIndex(testIndex);
                       // BLOC
                       _formKey.currentState.reset();
                     }
@@ -510,6 +509,37 @@ class _MyTodoPageState extends State<MyTodoPage> {
         });
       },
     );
+  }
+
+  Future _verifyIndices(int index, TodoModel newTodo) async {
+    if (tasksBox.length <= 0) {
+      await _crudIndices.updateIndex(0);
+      testIndex = _crudIndices.readIndex();
+      return;
+    }
+    else{
+      if (index != newTodo.index) {
+        crudOperations.updateTodo(
+            index,
+            TodoModel(
+                name: newTodo.name,
+                notes: newTodo.notes,
+                index: index,
+                isDone: newTodo.isDone,
+                icon: newTodo.icon));
+      }
+    }
+  }
+
+  Future _initialize() async {
+    if (await _crudIndices.readIndex() == null) {
+      testIndex = 0;
+      await _crudIndices.updateIndex(0);
+      // print(_crudIndices.readIndex());
+      // print(testIndex);
+    }
+    // Pegaro valor guardado
+    testIndex = _crudIndices.readIndex();
   }
 
   @override

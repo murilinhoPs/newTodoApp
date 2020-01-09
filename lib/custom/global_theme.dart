@@ -5,6 +5,14 @@ import 'Colors.dart';
 class MyTheme {
   static final ThemeData globalTheme = ThemeData(
       fontFamily: 'Nunito',
+      appBarTheme: AppBarTheme(
+        elevation: 0.0,
+        color: Colors.transparent,
+        textTheme: TextTheme(
+          title: TextStyle(color: Cor().customColor),
+          body1: TextStyle(color: Cor().customColor),
+        ),
+      ),
       brightness: Brightness.light,
       primaryColor: Colors.white,
       dividerColor: Colors.grey[400],

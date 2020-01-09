@@ -39,15 +39,17 @@ class _MyAppState extends State<MyApp> {
             future: Hive.openBox(
               'tasks',
               compactionStrategy: (int total, int deleted) {
-                return deleted > 10;
+                return total > 1;
               },
-            )
-                .then((_) => Hive.openBox('indices'))
-                .then((_) => Hive.box('indices').put('tasksIndices', 0)),
+            ).then((_) => Hive.openBox('indices')),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasError) {
-                  return Text(snapshot.error.toString());
+                  return Scaffold(
+                    body: Center(
+                      child: Text(snapshot.error.toString()),
+                    ),
+                  );
                 }
                 return MyTodoPage();
               }

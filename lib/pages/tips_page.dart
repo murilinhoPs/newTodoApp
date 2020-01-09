@@ -10,8 +10,34 @@ class Dicas extends StatelessWidget {
   Widget build(BuildContext context) {
     //final DicasState dicasProvider = Provider.of<DicasState>(context);
     final phoneW = MediaQuery.of(context).size.width;
+    final phoneH = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        elevation: 0.0,
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            SizedBox(height: phoneH * 0.03,),
+            Center(
+              child: Text(
+                'Dicas!',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Divider(
+              indent: 10.0,
+              endIndent: 10.0,
+              thickness: 3.0,
+            ),
+          ],
+        ),
+      ),
       body: Consumer<DicasState>(
         builder: (context, dicasProvider, widget) => Center(
           child: Container(
@@ -19,25 +45,13 @@ class Dicas extends StatelessWidget {
             padding: EdgeInsets.all(phoneW * .1),
             child: Column(
               children: <Widget>[
-                Center(
-                  child: Text(
-                    'Dicas!',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Divider(
-                  thickness: 3.0,
-                ),
                 ListBody(
                   children: <Widget>[
                     dicasProvider.carregarDicas(dicasProvider.dicas),
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: phoneW * 0.5),
+                  margin: EdgeInsets.only(top: phoneH * 0.05),
                   height: phoneW * 0.15,
                   child: Center(
                     child: Text(

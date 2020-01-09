@@ -1,4 +1,4 @@
-package com.example.new_todo_trianons
+package com.Trianon.social_todo_app
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

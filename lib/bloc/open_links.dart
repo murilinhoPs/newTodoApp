@@ -37,7 +37,7 @@ class CardLinks {
       case 'Twitter':
         return (MyFlutterIcons.twitter);
         break;
-      case 'Pinteres':
+      case 'Pinterest':
         return (MyFlutterIcons.pinterest);
         break;
       case 'Google':
