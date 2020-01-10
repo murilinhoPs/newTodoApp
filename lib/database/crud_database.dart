@@ -4,9 +4,9 @@ import 'package:new_todo_trianons/model/todo_model.dart';
 class TodoCrud {
   final _tasksBox = Hive.box('tasks');
 
-  void createTodo(TodoModel todo) {
+  createTodo(TodoModel todo) {
     _tasksBox.add(todo);
-   
+
     //print("Task name: ${todo.name}, Notes: ${todo.notes}");
   }
 
@@ -22,7 +22,7 @@ class TodoCrud {
     _tasksBox.deleteAt(index);
   }
 
-  List<dynamic> filterTodo(){
+  List<dynamic> filterTodo() {
     return _tasksBox.values.where((todo) => todo.isDone == true).toList();
   }
 }

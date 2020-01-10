@@ -13,6 +13,9 @@ class MyTheme {
           body1: TextStyle(color: Cor().customColor),
         ),
       ),
+      dialogTheme: DialogTheme(
+        contentTextStyle: TextStyle(color: Cor().customColorBody, fontSize: 16),
+      ),
       brightness: Brightness.light,
       primaryColor: Colors.white,
       dividerColor: Colors.grey[400],

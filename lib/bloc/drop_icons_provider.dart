@@ -29,7 +29,5 @@ class DropdownLinks extends ChangeNotifier {
     _selectionIcon = value;
 
     notifyListeners();
-
-    //print('ICON: $_selectionIcon');
   }
 }

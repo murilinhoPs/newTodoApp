@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
+import 'package:new_todo_trianons/bloc/indices_provider.dart';
 import 'package:new_todo_trianons/custom/global_theme.dart';
 import 'package:new_todo_trianons/database/app_database.dart';
 import 'package:new_todo_trianons/pages/todo_page.dart';
@@ -28,6 +29,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider<Index>(
+          create: (_) => Index(),
+        ),
         ChangeNotifierProvider<DicasState>.value(value: DicasState()),
         ChangeNotifierProvider<DropdownLinks>.value(value: DropdownLinks()),
       ],
