@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:new_todo_trianons/custom/my_flutter_app_icons.dart';
-import 'package:new_todo_trianons/model/todo_model.dart';
+import 'package:new_todo_trianons/app/shared/custom/my_flutter_app_icons.dart';
+import 'package:new_todo_trianons/app/shared/model/todo_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:toast/toast.dart';
 

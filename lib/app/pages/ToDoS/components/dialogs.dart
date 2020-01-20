@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:new_todo_trianons/bloc/indices_provider.dart';
-import 'package:new_todo_trianons/services/create_templates.dart';
+import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
+import 'package:new_todo_trianons/app/shared/services/create_templates.dart';
+import 'package:new_todo_trianons/app/pages/ToDoS/bloc/drop_icons_provider.dart';
+import 'package:new_todo_trianons/app/shared/custom/Colors.dart';
+import 'package:new_todo_trianons/app/shared/database/crud_database.dart';
+import 'package:new_todo_trianons/app/shared/database/crud_indices.dart';
+import 'package:new_todo_trianons/app/shared/model/todo_model.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
-
-import '../bloc/drop_icons_provider.dart';
-import '../custom/Colors.dart';
-import '../database/crud_database.dart';
-import '../database/crud_indices.dart';
-import '../model/todo_model.dart';
 
 class Dialogs {
   final TodoCrud _crudOperations = TodoCrud();
@@ -162,7 +161,8 @@ class Dialogs {
                           icon: dropdownState.selectionIcon,
                           index: testIndex.testIndex++);
                       _crudOperations.createTodo(newTodo);
-                      _crudIndices.updateIndex(testIndex.testIndex);
+                      _crudIndices.updateIndex(
+                          testIndex.testIndex); // atualiza o index no db
                       // BLOC
                       _formKey.currentState.reset();
                     } else {

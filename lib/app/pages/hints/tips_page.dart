@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:new_todo_trianons/bloc/dicas_provider.dart';
+import 'package:new_todo_trianons/app/pages/hints/dicas_provider.dart';
 import 'package:provider/provider.dart';
 
 class Dicas extends StatelessWidget {
@@ -20,7 +20,9 @@ class Dicas extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            SizedBox(height: phoneH * 0.03,),
+            SizedBox(
+              height: phoneH * 0.03,
+            ),
             Center(
               child: Text(
                 'Dicas!',

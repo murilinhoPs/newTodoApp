@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:new_todo_trianons/bloc/dicas_provider.dart';
-import 'package:new_todo_trianons/bloc/indices_provider.dart';
-import 'package:new_todo_trianons/components/dialogs.dart';
-import 'package:new_todo_trianons/services/open_links.dart';
-import 'package:new_todo_trianons/database/crud_indices.dart';
-import 'package:new_todo_trianons/model/todo_model.dart';
-import 'package:new_todo_trianons/pages/tips_page.dart';
+import 'package:new_todo_trianons/app/pages/hints/dicas_provider.dart';
+import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
+import 'package:new_todo_trianons/app/pages/ToDoS/components/dialogs.dart';
+import 'package:new_todo_trianons/app/shared/services/open_links.dart';
+import 'package:new_todo_trianons/app/shared/database/crud_indices.dart';
+import 'package:new_todo_trianons/app/shared/model/todo_model.dart';
+import 'package:new_todo_trianons/app/pages/hints/tips_page.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
-import 'package:new_todo_trianons/custom/Colors.dart';
+import 'package:new_todo_trianons/app/shared/custom/Colors.dart';
 
-import '../custom/my_flutter_app_icons.dart';
-import '../database/crud_database.dart';
+import 'package:new_todo_trianons/app/shared/custom/my_flutter_app_icons.dart';
+import 'package:new_todo_trianons/app/shared/database/crud_database.dart';
 
 class MyTodoPage extends StatefulWidget {
   @override
@@ -32,12 +32,14 @@ class _MyTodoPageState extends State<MyTodoPage> {
 
   final Dialogs _dialogs = Dialogs();
 
+  final IndexChanges _listenIndex = IndexChanges();
+
   @override
   void initState() {
     // tasksBox.clear();
     // Hive.box('indices').clear();
     // _crudIndices.updateIndex(0);
-    _initialize();
+    _listenIndex.initialize(context);
 
     super.initState();
   }
@@ -94,10 +96,12 @@ class _MyTodoPageState extends State<MyTodoPage> {
           ),
         ),
       ),
-      body: ValueListenableBuilder(
-          valueListenable: Hive.box('tasks').listenable(),
-          builder: (BuildContext context, Box tasksBox, Widget widget) =>
-              _beforeTodoList(context)),
+      body:
+          // Consumer do Hive.box(o widget que vai rebuildar quando algum valor no Hive.box('tasks') mudar => ouvir)
+          ValueListenableBuilder(
+              valueListenable: Hive.box('tasks').listenable(),
+              builder: (BuildContext context, Box tasksBox, Widget widget) =>
+                  _beforeTodoList(context)),
       floatingActionButton: SpeedDial(
         child: Icon(Icons.note_add),
         overlayOpacity: 0.5,
@@ -179,7 +183,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
                     itemBuilder: (context, index) {
                       final todo = crudOperations.readTodo(index);
 
-                      _verifyIndices(index, todo);
+                      _listenIndex.verifyIndices(index, todo, context);
 
                       // print('builderLenght: ${tasksBox.length}');
                       // print('saveIndex: ${_crudIndices.readIndex()}');
@@ -349,8 +353,10 @@ class _MyTodoPageState extends State<MyTodoPage> {
           onPressed: () async {
             crudOperations.deleteTodo(todo.index);
 
-            await _crudIndices.updateIndex(_crudIndices.readIndex() - 1);
-            testIndex.testIndex = _crudIndices.readIndex();
+            await _crudIndices.updateIndex(
+                _crudIndices.readIndex() - 1); // atualiza o valor no db
+            testIndex.testIndex = _crudIndices
+                .readIndex(); // atualiza o valor do provider com o db
 
             //print('test:$testIndex + indicesDb: ${_crudIndices.readIndex()}');
           }),
@@ -358,40 +364,6 @@ class _MyTodoPageState extends State<MyTodoPage> {
         _dialogs.openTodoDialog(todo, context);
       },
     );
-  }
-
-  Future _verifyIndices(int index, TodoModel newTodo) async {
-    final Index testIndex = Provider.of<Index>(context, listen: false);
-
-    if (tasksBox.length <= 0) {
-      await _crudIndices.updateIndex(0);
-      testIndex.testIndex = _crudIndices.readIndex();
-      return;
-    } else {
-      if (index != newTodo.index) {
-        crudOperations.updateTodo(
-            index,
-            TodoModel(
-                name: newTodo.name,
-                notes: newTodo.notes,
-                index: index,
-                isDone: newTodo.isDone,
-                icon: newTodo.icon));
-      }
-    }
-  }
-
-  Future _initialize() async {
-    final Index testIndex = Provider.of<Index>(context, listen: false);
-
-    if (await _crudIndices.readIndex() == null) {
-      testIndex.testIndex = 0;
-      await _crudIndices.updateIndex(0);
-      // print(_crudIndices.readIndex());
-      // print(testIndex);
-    }
-    // Pegaro valor guardado
-    testIndex.testIndex = _crudIndices.readIndex();
   }
 
   @override

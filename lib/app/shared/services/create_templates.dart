@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:new_todo_trianons/bloc/indices_provider.dart';
+import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
 import 'package:provider/provider.dart';
-import '../bloc/drop_icons_provider.dart';
+import 'package:new_todo_trianons/app/pages/ToDoS/bloc/drop_icons_provider.dart';
 import '../model/todo_model.dart';
 
 class Templates {

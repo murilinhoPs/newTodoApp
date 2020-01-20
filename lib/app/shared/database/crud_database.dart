@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:new_todo_trianons/model/todo_model.dart';
+import 'package:new_todo_trianons/app/shared/model/todo_model.dart';
 
 class TodoCrud {
   final _tasksBox = Hive.box('tasks');
