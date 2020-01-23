@@ -1,14 +1,30 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
+import 'package:new_todo_trianons/app/pages/ToDoS/components/dialogs.dart';
+import 'package:new_todo_trianons/app/pages/hints/dicas_provider.dart';
+import 'package:new_todo_trianons/app/pages/hints/tips_page.dart';
+import 'package:new_todo_trianons/app/shared/custom/Colors.dart';
+import 'package:new_todo_trianons/app/shared/custom/my_flutter_app_icons.dart';
+import 'package:new_todo_trianons/app/shared/database/crud_database.dart';
+import 'package:new_todo_trianons/app/shared/database/crud_indices.dart';
+import 'package:new_todo_trianons/app/shared/model/todo_model.dart';
+import 'package:new_todo_trianons/app/shared/services/open_links.dart';
+import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 class ToDoList extends StatelessWidget {
+  ToDoList({this.todo});
+
+  final TodoModel todo; // required
+
+  final CardLinks todosIcons = CardLinks();
+  final TodoCrud crudOperations = TodoCrud();
+  final TodoIndicesCrud _crudIndices = TodoIndicesCrud();
+  final Dialogs _dialogs = Dialogs();
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
-  }
-
-   Widget _todoList(TodoModel todo) {
     final phoneW = MediaQuery.of(context).size.width;
     final phoneH = MediaQuery.of(context).size.height;
 
@@ -21,7 +37,7 @@ class ToDoList extends StatelessWidget {
       margin: EdgeInsets.all(phoneW * .025),
       child: Column(
         children: <Widget>[
-          _todoListTile(todo),
+          _todoListTile(todo, context),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -87,7 +103,7 @@ class ToDoList extends StatelessWidget {
     );
   }
 
-  Widget _todoListTile(TodoModel todo) {
+  Widget _todoListTile(TodoModel todo, BuildContext context) {
     final phoneW = MediaQuery.of(context).size.width;
 
     final Index testIndex = Provider.of<Index>(context, listen: false);
@@ -175,5 +191,4 @@ class ToDoList extends StatelessWidget {
       },
     );
   }
-
 }

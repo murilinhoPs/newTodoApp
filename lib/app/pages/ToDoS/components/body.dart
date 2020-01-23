@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
+import 'package:new_todo_trianons/app/pages/ToDoS/components/todo_list.dart';
 import 'package:new_todo_trianons/app/shared/database/crud_database.dart';
 
 class BodyApp extends StatelessWidget {
@@ -68,7 +69,7 @@ class BodyApp extends StatelessWidget {
 
                       // print('builderLenght: ${tasksBox.length}');
                       // print('saveIndex: ${_crudIndices.readIndex()}');
-                      return _todoList(todo);
+                      return ToDoList(todo: todo);
                     })
                 : Center(
                     child: Text('Escreva sua primeira tarefa'),
