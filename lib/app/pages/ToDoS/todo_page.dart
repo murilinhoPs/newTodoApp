@@ -96,12 +96,6 @@ class _MyTodoPageState extends State<MyTodoPage> {
           ),
         ),
       ),
-      body:
-          // Consumer do Hive.box(o widget que vai rebuildar quando algum valor no Hive.box('tasks') mudar => ouvir)
-          ValueListenableBuilder(
-              valueListenable: Hive.box('tasks').listenable(),
-              builder: (BuildContext context, Box tasksBox, Widget widget) =>
-                  _beforeTodoList(context)),
       floatingActionButton: SpeedDial(
         child: Icon(Icons.note_add),
         overlayOpacity: 0.5,
@@ -127,6 +121,12 @@ class _MyTodoPageState extends State<MyTodoPage> {
           ),
         ],
       ),
+      body:
+          // Consumer do Hive.box(o widget que vai rebuildar quando algum valor no Hive.box('tasks') mudar => ouvir)
+          ValueListenableBuilder(
+              valueListenable: Hive.box('tasks').listenable(),
+              builder: (BuildContext context, Box tasksBox, Widget widget) =>
+                  _beforeTodoList(context)),
     );
   }
 
