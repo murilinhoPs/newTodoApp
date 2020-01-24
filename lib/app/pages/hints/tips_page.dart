@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 class Dicas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //final DicasState dicasProvider = Provider.of<DicasState>(context);
     final phoneW = MediaQuery.of(context).size.width;
     final phoneH = MediaQuery.of(context).size.height;
 

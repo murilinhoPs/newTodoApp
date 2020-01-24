@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
@@ -16,7 +17,7 @@ import 'package:toast/toast.dart';
 class ToDoList extends StatelessWidget {
   ToDoList({this.todo});
 
-  final TodoModel todo; // required
+  final TodoModel todo;
 
   final CardLinks todosIcons = CardLinks();
   final TodoCrud crudOperations = TodoCrud();
@@ -30,6 +31,9 @@ class ToDoList extends StatelessWidget {
 
     final DicasState dicasProvider =
         Provider.of<DicasState>(context, listen: false);
+
+    final FirebaseAnalyticsObserver observer =
+        Provider.of<FirebaseAnalyticsObserver>(context, listen: false);
 
     return Card(
       shape: RoundedRectangleBorder(
@@ -59,6 +63,8 @@ class ToDoList extends StatelessWidget {
                     dicasProvider.dicas = todo.icon;
 
                     if (dicasProvider.dicas != 'Lembrete') {
+                      observer.analytics.setCurrentScreen(
+                          screenName: 'Dicas', screenClassOverride: 'Dicas()');
                       Navigator.push(
                         context,
                         CupertinoPageRoute(

@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -7,7 +9,6 @@ import 'package:new_todo_trianons/app/pages/ToDoS/components/body.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/components/dialogs.dart';
 import 'package:new_todo_trianons/app/shared/custom/Colors.dart';
-import 'package:new_todo_trianons/app/shared/repository/firebase_provider.dart';
 import 'package:provider/provider.dart';
 
 class MyTodoPage extends StatefulWidget {
@@ -23,9 +24,11 @@ class _MyTodoPageState extends State<MyTodoPage> {
   final IndexChanges _listenIndex = IndexChanges();
 
   void _sendScreenInfo(BuildContext context) {
-    final Analytics analise = Provider.of<Analytics>(context, listen: false);
+    final FirebaseAnalyticsObserver observer =
+        Provider.of<FirebaseAnalyticsObserver>(context, listen: false);
 
-    analise.observer.analytics.setCurrentScreen(screenName: 'MyTodoPage');
+    observer.analytics.setCurrentScreen(
+        screenName: 'MyTodoPage', screenClassOverride: 'MyTodoPage');
   }
 
   @override
@@ -41,7 +44,8 @@ class _MyTodoPageState extends State<MyTodoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Analytics analise = Provider.of<Analytics>(context, listen: false);
+    final FirebaseAnalytics analytics =
+        Provider.of<FirebaseAnalytics>(context, listen: false);
     final phoneW = MediaQuery.of(context).size.width;
     final phoneH = MediaQuery.of(context).size.height;
 
@@ -100,32 +104,28 @@ class _MyTodoPageState extends State<MyTodoPage> {
           SpeedDialChild(
               child: Icon(Icons.create),
               label: 'Criar novo',
-              onTap: () {
-                analise.analytics.logEvent(
-                  name: 'Criar ToDo custom',
+              onTap: () async {
+                _dialogs.openTodoDialog(null, context);
+                await analytics.logEvent(
+                  name: 'Criar_custom',
                   parameters: <String, dynamic>{
                     'criar': 'criou seu todo customizavel'
                   },
                 );
-                analise.analytics.setCurrentScreen(screenName: 'MyTodoPage');
-                _dialogs.openTodoDialog(null, context);
               }),
           SpeedDialChild(
             child: Icon(Icons.add),
             elevation: 0.0,
-            onTap: () {
-              analise.analytics.logEvent(
-                name: 'Criar ToDo template'
-              );
-              // Toast.show('Não interativo...', context,
-              //     duration: 2,
-              //     backgroundColor: Colors.grey[300],
-              //     textColor: Colors.black);
-
+            onTap: () async {
               _dialogs.openTemplateDialog(null, context);
+              await analytics.logEvent(
+                name: 'create_template',
+                parameters: <String, dynamic>{
+                  'string': 'criou seu todo template'
+                },
+              );
             },
             label: 'Criar template',
-            //backgroundColor: Colors.grey[300],
           ),
         ],
       ),
