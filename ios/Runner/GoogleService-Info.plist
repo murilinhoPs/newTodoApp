@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>583015937649-1m1aveb6vmpmnah1ud9i5505c560v2mv.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.583015937649-1m1aveb6vmpmnah1ud9i5505c560v2mv</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC2QdPKpxS5K3-CymYl_TZTk0Nj4UXFjzE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>583015937649</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.TrianonsSocialMedia.socialTodoApp</string>
+	<key>PROJECT_ID</key>
+	<string>trianons-checklist</string>
+	<key>STORAGE_BUCKET</key>
+	<string>trianons-checklist.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:583015937649:ios:51ebc6c94708b4e31fcdd0</string>
+	<key>DATABASE_URL</key>
+	<string>https://trianons-checklist.firebaseio.com</string>
+</dict>
+</plist>
