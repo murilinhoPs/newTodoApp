@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "583015937649",
+    "firebase_url": "https://trianons-checklist.firebaseio.com",
+    "project_id": "trianons-checklist",
+    "storage_bucket": "trianons-checklist.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583015937649:android:079115f8e124d3f81fcdd0",
+        "android_client_info": {
+          "package_name": "com.Trianon.social_todo_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "583015937649-vop6l73icod09kmcin07fn2g5qi91eqh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrHY_FxNRwCv1ugnOuHNnLxcX0vJ0KAAI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "583015937649-vop6l73icod09kmcin07fn2g5qi91eqh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

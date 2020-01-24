@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:new_todo_trianons/app/shared/database/crud_database.dart';
-import 'package:new_todo_trianons/app/shared/database/crud_indices.dart';
 import 'package:new_todo_trianons/app/shared/model/todo_model.dart';
+import 'package:new_todo_trianons/app/shared/repository/crud_database.dart';
+import 'package:new_todo_trianons/app/shared/repository/crud_indices.dart';
 import 'package:provider/provider.dart';
 
 class Index {

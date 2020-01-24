@@ -7,6 +7,8 @@ import 'package:new_todo_trianons/app/pages/ToDoS/components/body.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/components/dialogs.dart';
 import 'package:new_todo_trianons/app/shared/custom/Colors.dart';
+import 'package:new_todo_trianons/app/shared/repository/firebase_provider.dart';
+import 'package:provider/provider.dart';
 
 class MyTodoPage extends StatefulWidget {
   @override
@@ -20,18 +22,26 @@ class _MyTodoPageState extends State<MyTodoPage> {
 
   final IndexChanges _listenIndex = IndexChanges();
 
+  void _sendScreenInfo(BuildContext context) {
+    final Analytics analise = Provider.of<Analytics>(context, listen: false);
+
+    analise.observer.analytics.setCurrentScreen(screenName: 'MyTodoPage');
+  }
+
   @override
   void initState() {
     // tasksBox.clear();
     // Hive.box('indices').clear();
     // _crudIndices.updateIndex(0);
     _listenIndex.initialize(context);
+    _sendScreenInfo(context);
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final Analytics analise = Provider.of<Analytics>(context, listen: false);
     final phoneW = MediaQuery.of(context).size.width;
     final phoneH = MediaQuery.of(context).size.height;
 
@@ -90,11 +100,23 @@ class _MyTodoPageState extends State<MyTodoPage> {
           SpeedDialChild(
               child: Icon(Icons.create),
               label: 'Criar novo',
-              onTap: () => _dialogs.openTodoDialog(null, context)),
+              onTap: () {
+                analise.analytics.logEvent(
+                  name: 'Criar ToDo custom',
+                  parameters: <String, dynamic>{
+                    'criar': 'criou seu todo customizavel'
+                  },
+                );
+                analise.analytics.setCurrentScreen(screenName: 'MyTodoPage');
+                _dialogs.openTodoDialog(null, context);
+              }),
           SpeedDialChild(
             child: Icon(Icons.add),
             elevation: 0.0,
             onTap: () {
+              analise.analytics.logEvent(
+                name: 'Criar ToDo template'
+              );
               // Toast.show('Não interativo...', context,
               //     duration: 2,
               //     backgroundColor: Colors.grey[300],

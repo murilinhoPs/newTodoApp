@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
-import 'package:new_todo_trianons/app/shared/services/create_templates.dart';
+import 'package:new_todo_trianons/app/shared/repository/create_templates.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/drop_icons_provider.dart';
 import 'package:new_todo_trianons/app/shared/custom/Colors.dart';
-import 'package:new_todo_trianons/app/shared/database/crud_database.dart';
-import 'package:new_todo_trianons/app/shared/database/crud_indices.dart';
 import 'package:new_todo_trianons/app/shared/model/todo_model.dart';
+import 'package:new_todo_trianons/app/shared/repository/crud_database.dart';
+import 'package:new_todo_trianons/app/shared/repository/crud_indices.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
