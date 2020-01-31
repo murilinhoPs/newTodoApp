@@ -9,6 +9,9 @@ void main() async {
   await AppDatabase.instance.database;
   //await Hive.openBox('indices');
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) => runApp(AppWidget()));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
+    (_) => runApp(
+      AppWidget(),
+    ),
+  );
 }

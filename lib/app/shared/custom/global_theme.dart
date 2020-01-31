@@ -8,9 +8,10 @@ class MyTheme {
       appBarTheme: AppBarTheme(
         elevation: 0.0,
         color: Colors.transparent,
+        //actionsIconTheme: IconThemeData(color: Colors.white, size: 35),
         textTheme: TextTheme(
-          title: TextStyle(color: Cor().customColor),
-          body1: TextStyle(color: Cor().customColor),
+          headline6: TextStyle(color: Cor().customColor, fontSize: 30),
+          bodyText1: TextStyle(color: Cor().customColor, fontSize: 22),
         ),
       ),
       dialogTheme: DialogTheme(
@@ -20,21 +21,28 @@ class MyTheme {
       primaryColor: Colors.white,
       dividerColor: Colors.grey[400],
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Cor().appBarGradientCima, elevation: 3.0),
+        backgroundColor: Cor().appBarGradientCima,
+        elevation: 3.0,
+      ),
       iconTheme: IconThemeData(
           color: Cor()
               .customColor[600]), //IconThemeData(color: Colors.purple[600]),
       cursorColor: Cor().customColor, //Colors.purple[600],
       accentColor: Cor().customColorBody, //Colors.purple[600],
       textTheme: TextTheme(
-        body1: TextStyle(
-            fontFamily: 'Nunito', fontSize: 18, color: Cor().customColor),
-        subtitle: TextStyle(
+        caption: TextStyle(
             decorationColor: Cor().customColor,
             color: Cor().customColor,
-            fontSize: 18,
+            fontSize: 20,
             fontFamily: 'Nunito'),
-        title: TextStyle(
+        bodyText1: TextStyle(
+            fontFamily: 'Nunito', fontSize: 18, color: Cor().customColor),
+        subtitle1: TextStyle(
+            decorationColor: Cor().customColor,
+            color: Cor().customColor,
+            fontSize: 20,
+            fontFamily: 'Nunito'),
+        headline1: TextStyle(
             decorationColor: Cor().customColor,
             color: Cor().customColor,
             fontSize: 22,

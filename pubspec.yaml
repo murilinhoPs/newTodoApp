@@ -32,6 +32,9 @@ dependencies:
   provider: ^4.0.1
   flutter_speed_dial: ^1.2.5
   firebase_analytics: ^5.0.9
+  dio: ^3.0.8
+  bloc_pattern: ^2.5.1
+  rxdart: ^0.23.1
 
 
 dev_dependencies:

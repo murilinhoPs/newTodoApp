@@ -32,6 +32,7 @@ class _AppWidgetState extends State<AppWidget> {
         Provider<FirebaseAnalyticsObserver>.value(value: observer),
       ],
       child: MaterialApp(
+        darkTheme: MyTheme.globalTheme,
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: MyTheme.globalTheme,

@@ -32,7 +32,8 @@ class BodyApp extends StatelessWidget {
             padding: EdgeInsets.all(10),
             child: Text(
               "${crudOperations.filterTodo().length} Tarefas prontas",
-              style: TextStyle(color: Colors.grey[700]),
+              style: TextStyle(
+                  color: Colors.grey[700], fontFamily: 'Nunito', fontSize: 20),
             ),
           ),
           Row(

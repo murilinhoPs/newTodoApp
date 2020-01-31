@@ -1,0 +1,5 @@
+Create a file in the services folder named bot_key.dart;
+
+create a file named const BOT_KEY = 'Bot Token';
+
+and that's it!

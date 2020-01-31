@@ -9,6 +9,7 @@
 .history
 .svn/
 *.jks
+/lib/app/shared/services/bot_key.dart
 
 # IntelliJ related
 *.iml

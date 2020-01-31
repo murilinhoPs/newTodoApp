@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:new_todo_trianons/app/pages/ToDoS/components/help_icon.dart';
+import 'package:new_todo_trianons/app/pages/hints/components/back_button.dart';
 import 'package:new_todo_trianons/app/pages/hints/dicas_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -13,8 +15,24 @@ class Dicas extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: MyBackButton(
+          EdgeInsets.only(left: 3.0),
+        ),
+        actions: <Widget>[
+          HelpIcon(Colors.black),
+        ],
         automaticallyImplyLeading: false,
         elevation: 0.0,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(10.0),
+          child: Container(
+            child: Divider(
+              indent: 50.0,
+              endIndent: 50.0,
+              thickness: 2.0,
+            ),
+          ),
+        ),
         title: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
@@ -26,15 +44,12 @@ class Dicas extends StatelessWidget {
               child: Text(
                 'Dicas!',
                 style: TextStyle(
+                  fontFamily: 'Nunito',
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
+                  //color: Cor().customColor
                 ),
               ),
-            ),
-            Divider(
-              indent: 10.0,
-              endIndent: 10.0,
-              thickness: 3.0,
             ),
           ],
         ),
@@ -59,8 +74,9 @@ class Dicas extends StatelessWidget {
                       'Em breve teremos mais dicas!',
                       style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Nunito'),
                     ),
                   ),
                 ),
@@ -68,14 +84,6 @@ class Dicas extends StatelessWidget {
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        mini: true,
-        child: Icon(Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
-            size: 20),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
       ),
     );
     //throw UnimplementedError();

@@ -8,7 +8,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/components/body.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/components/dialogs.dart';
+import 'package:new_todo_trianons/app/pages/ToDoS/components/help_icon.dart';
 import 'package:new_todo_trianons/app/shared/custom/Colors.dart';
+import 'package:new_todo_trianons/app/shared/custom/global_theme.dart';
 import 'package:provider/provider.dart';
 
 class MyTodoPage extends StatefulWidget {
@@ -51,6 +53,9 @@ class _MyTodoPageState extends State<MyTodoPage> {
 
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          HelpIcon(Colors.white),
+        ],
         elevation: 0.0,
         flexibleSpace: Container(
           alignment: Alignment.bottomCenter,
@@ -104,6 +109,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
           SpeedDialChild(
               child: Icon(Icons.create),
               label: 'Criar novo',
+              labelStyle: MyTheme.globalTheme.textTheme.bodyText1,
               onTap: () async {
                 _dialogs.openTodoDialog(null, context);
                 await analytics.logEvent(
@@ -116,6 +122,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
           SpeedDialChild(
             child: Icon(Icons.add),
             elevation: 0.0,
+            labelStyle: MyTheme.globalTheme.textTheme.bodyText1,
             onTap: () async {
               _dialogs.openTemplateDialog(null, context);
               await analytics.logEvent(
