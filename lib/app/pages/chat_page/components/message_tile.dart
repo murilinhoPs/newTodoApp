@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:new_todo_trianons/app/pages/chat_page/bloc/chat_module.dart';
+import 'package:new_todo_trianons/app/pages/chat_page/bloc/text_field_bloc.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/models/message_model.dart';
 
 class MessageTile extends StatelessWidget {
@@ -11,6 +13,11 @@ class MessageTile extends StatelessWidget {
     return Column(
       children: <Widget>[
         ListTile(
+          // onTap: () {
+          //   ChatModule.to
+          //       .bloc<TextBloc>()
+          //       .changeFormData('@${item.author.username} + ${item.author.id}');
+          // },
           leading: Hero(
             child: CircleAvatar(
               backgroundColor: Colors.white,
@@ -22,10 +29,13 @@ class MessageTile extends StatelessWidget {
           title: Text(item.author.username,
               style: TextStyle(color: Colors.deepPurple[800], fontSize: 16)),
           subtitle: Text(
-            //        (item.content.contains('<@!>')) ?
-            // item.content.replaceAll('<@! >', item.mentions[0].username):
-            item.content,
-
+            (item.content.contains('<@'))
+                ? item.content.replaceAll('<@${item.mentions[0].id}>',
+                    '@${item.mentions[0].username}')
+                : (item.content.contains('<@!'))
+                    ? item.content.replaceAll('<@!${item.mentions[0].id}>',
+                        '@${item.mentions[0].username}')
+                    : item.content,
             style: TextStyle(fontSize: 17, color: Colors.grey[800]),
           ),
         ),

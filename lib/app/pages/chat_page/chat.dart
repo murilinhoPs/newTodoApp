@@ -50,46 +50,44 @@ class _State extends State<ChatPage> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: StreamBuilder<List<MessageModel>>(
-            stream: ChatModule.to.bloc<GetBloc>().saida,
-            builder: (context, snapshot) {
-              return snapshot.hasData
-                  ? Stack(
-                      fit: StackFit.passthrough,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(
-                              bottom:
-                                  MediaQuery.of(context).size.height * 0.085),
-                          child: ListView.builder(
-                            reverse: true,
-                            shrinkWrap: true,
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, index) {
-                              MessageModel item = snapshot.data[index];
+          child: Stack(
+        fit: StackFit.passthrough,
+        children: <Widget>[
+          StreamBuilder<List<MessageModel>>(
+              stream: ChatModule.to.bloc<GetBloc>().saida,
+              builder: (context, snapshot) {
+                return snapshot.hasData
+                    ? Padding(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).size.height * 0.085),
+                        child: ListView.builder(
+                          reverse: true,
+                          shrinkWrap: true,
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            MessageModel item = snapshot.data[index];
 
-                              return MessageTile(
-                                item: item,
-                              );
-                            },
-                          ),
-                        ),
-                        StreamBuilder<int>(
-                          stream: blocPost.saida,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) blocPost.entrada.add(null);
-
-                            return TextForms(
-                              formController: formController,
-                              blocPost: blocPost,
+                            return MessageTile(
+                              item: item,
                             );
                           },
                         ),
-                      ],
-                    )
-                  : Center(child: CircularProgressIndicator());
-            }),
-      ),
+                      )
+                    : Center(child: CircularProgressIndicator());
+              }),
+          StreamBuilder<int>(
+            stream: blocPost.saida,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) blocPost.entrada.add(null);
+
+              return TextForms(
+                formController: formController,
+                blocPost: blocPost,
+              );
+            },
+          ),
+        ],
+      )),
     );
   }
 }

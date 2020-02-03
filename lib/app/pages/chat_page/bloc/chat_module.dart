@@ -2,6 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/widgets.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/bloc/get_bloc.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/bloc/post_bloc.dart';
+import 'package:new_todo_trianons/app/pages/chat_page/bloc/text_field_bloc.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/chat.dart';
 
 class ChatModule extends ModuleWidget {
@@ -13,6 +14,7 @@ class ChatModule extends ModuleWidget {
         Bloc(
           (_) => PostBloc(),
         ),
+        Bloc((_) => TextBloc())
       ];
 
   @override
