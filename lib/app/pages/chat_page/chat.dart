@@ -68,7 +68,7 @@ class _State extends State<ChatPage> {
                             MessageModel item = snapshot.data[index];
 
                             return MessageTile(
-                              item: item,
+                              message: item,
                             );
                           },
                         ),
@@ -78,8 +78,6 @@ class _State extends State<ChatPage> {
           StreamBuilder<int>(
             stream: blocPost.saida,
             builder: (context, snapshot) {
-              if (snapshot.hasData) blocPost.entrada.add(null);
-
               return TextForms(
                 formController: formController,
                 blocPost: blocPost,

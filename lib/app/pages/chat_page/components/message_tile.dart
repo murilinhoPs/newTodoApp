@@ -4,50 +4,64 @@ import 'package:new_todo_trianons/app/pages/chat_page/bloc/text_field_bloc.dart'
 import 'package:new_todo_trianons/app/pages/chat_page/models/message_model.dart';
 
 class MessageTile extends StatelessWidget {
-  MessageTile({this.item});
+  MessageTile({this.message});
 
-  final MessageModel item;
+  final MessageModel message;
+
+  final String botUser = 'HelpBot';
+
+  _blocData() {
+    ChatModule.to
+        .bloc<TextBloc>()
+        .changeFormData('@${message.author.username}');
+
+    ChatModule.to.bloc<TextBloc>().idEntry.add('<@${message.author.id}>');
+  }
 
   @override
   Widget build(BuildContext context) {
+    String _contentText(MessageModel msg) {
+      return (msg.content.contains('<@'))
+          ? msg.content.replaceAll(
+              '<@${msg.mentions[0].id}>', '@${msg.mentions[0].username}')
+          : (msg.content.contains('<@!'))
+              ? msg.content.replaceAll(
+                  '<@!${msg.mentions[0].id}>', '@${msg.mentions[0].username}')
+              : msg.content;
+    }
+
+    _contentImage(MessageModel file) {
+      return file.attachments.length > 0
+          ? Image.network(file.attachments[0].url)
+          : file.embeds.length > 0
+              ? Image.network(file.embeds[0].image.url)
+              : Container(
+                  height: 0,
+                  width: 0,
+                );
+    }
+
     return Column(
       children: <Widget>[
         ListTile(
-          // onTap: () {
-          //   ChatModule.to
-          //       .bloc<TextBloc>()
-          //       .changeFormData('@${item.author.username} + ${item.author.id}');
-          // },
+          dense: true,
+          onTap: () => _blocData(),
           leading: Hero(
             child: CircleAvatar(
               backgroundColor: Colors.white,
               backgroundImage: NetworkImage(
-                  'https://cdn.discordapp.com/avatars/${item.author.id}/${item.author.avatar}.png'),
+                  'https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png'),
             ),
-            tag: item.author.username,
+            tag: message.author.username,
           ),
-          title: Text(item.author.username,
+          title: Text(message.author.username,
               style: TextStyle(color: Colors.deepPurple[800], fontSize: 16)),
           subtitle: Text(
-            (item.content.contains('<@'))
-                ? item.content.replaceAll('<@${item.mentions[0].id}>',
-                    '@${item.mentions[0].username}')
-                : (item.content.contains('<@!'))
-                    ? item.content.replaceAll('<@!${item.mentions[0].id}>',
-                        '@${item.mentions[0].username}')
-                    : item.content,
+            _contentText(message),
             style: TextStyle(fontSize: 17, color: Colors.grey[800]),
           ),
         ),
-        item.attachments.length > 0 //||
-            ? Image.network(item.attachments[0].url)
-            : item.embeds.length > 0
-                ? Image.network(item.embeds[0].image.url)
-                : Container(
-                    height: 0,
-                    width: 0,
-                  )
-        //snapshot.data.contains('attachments') ?
+        _contentImage(message)
       ],
     );
   }

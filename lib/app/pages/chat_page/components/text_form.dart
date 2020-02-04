@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/bloc/chat_module.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/bloc/text_field_bloc.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/chat.dart';
-import 'package:new_todo_trianons/app/pages/chat_page/models/mentions_model.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/models/message_model.dart';
 import 'package:new_todo_trianons/app/shared/custom/Colors.dart';
 
@@ -13,6 +12,42 @@ class TextForms extends StatelessWidget {
   final blocPost;
 
   final Controller formController;
+
+  _onSubmitt() {
+    if (formController.validade()) {
+      var ctrlText = controller.text;
+      if (ctrlText.startsWith('@')) {
+        var edit = ctrlText.split(' ')[0];
+
+        var fim =
+            ctrlText.replaceAll(edit, ChatModule.to.bloc<TextBloc>().idValue);
+
+        print(edit + fim);
+
+        blocPost.content = fim;
+
+        ChatModule.to.bloc<TextBloc>().entrada.add(null);
+        ChatModule.to.bloc<TextBloc>().idEntry.add(null);
+      }
+
+      blocPost.entrada.add(
+        MessageModel(
+          content: blocPost.content,
+          // embed: Embeds(
+          //   title: 'Embed message',
+          //   description: 'hdhdhdhd',
+          //   image: Thumbnail(
+          //       url:
+          //           'https://i.pinimg.com/originals/ce/2b/27/ce2b274fa68d234865a6abf69644f472.png'),
+          // ),
+        ),
+      );
+
+      controller.clear();
+
+      blocPost.content = null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +70,9 @@ class TextForms extends StatelessWidget {
                     child: StreamBuilder<String>(
                         stream: ChatModule.to.bloc<TextBloc>().saida,
                         builder: (context, snapshot) {
-                          // controller.text =
-                          //     snapshot.data;
-
-                          //TODO: Mostre o username; Delete o username quando mandar; enviar o Id;
+                          if (snapshot.hasData)
+                            controller.text = '${snapshot.data}';
+                          // ${ChatModule.to.bloc<TextBloc>().idValue}';
 
                           return TextFormField(
                             controller: controller,
@@ -50,26 +84,7 @@ class TextForms extends StatelessWidget {
                             validator: (value) =>
                                 value.isEmpty ? 'Deve escrever algo...' : null,
                             onSaved: (value) => blocPost.content = value,
-                            onFieldSubmitted: (_) async {
-                              if (formController.validade()) {
-                                controller.clear();
-                                blocPost.entrada.add(
-                                  MessageModel(
-                                    content: blocPost.content,
-                                    // embed: Embeds(
-                                    //   title: 'Embed message',
-                                    //   description: 'hdhdhdhd',
-                                    //   image: Thumbnail(
-                                    //       url:
-                                    //           'https://i.pinimg.com/originals/ce/2b/27/ce2b274fa68d234865a6abf69644f472.png'),
-                                    // ),
-                                  ),
-                                );
-
-                                blocPost.content = null;
-                                blocPost.entrada.add(null);
-                              }
-                            },
+                            onFieldSubmitted: (_) => _onSubmitt(),
                           );
                         }),
                   ),
@@ -78,25 +93,7 @@ class TextForms extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.send),
                   iconSize: 28,
-                  onPressed: () async {
-                    if (formController.validade()) {
-                      blocPost.entrada.add(
-                        MessageModel(
-                          content: blocPost.content,
-                          // embed: Embeds(
-                          //   image: Thumbnail(
-                          //       url:
-                          //           'https://i.pinimg.com/originals/ce/2b/27/ce2b274fa68d234865a6abf69644f472.png'),
-                          // ),
-                        ),
-                      );
-
-                      controller.clear();
-
-                      blocPost.content = null;
-                      blocPost.entrada.add(null);
-                    }
-                  },
+                  onPressed: () => _onSubmitt(),
                   color: Cor().customColorBody,
                 )
               ],
