@@ -1,9 +1,12 @@
+import 'package:facebook_app_events/facebook_app_events.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/bloc/chat_module.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/bloc/text_field_bloc.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/chat.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/models/message_model.dart';
 import 'package:new_todo_trianons/app/shared/custom/Colors.dart';
+import 'package:provider/provider.dart';
 
 class TextForms extends StatelessWidget {
   TextForms({this.formController, this.blocPost});
@@ -13,7 +16,9 @@ class TextForms extends StatelessWidget {
 
   final Controller formController;
 
-  _onSubmitt() {
+  final fbEvent = FacebookAppEvents();
+
+  _onSubmitt(context) {
     if (formController.validade()) {
       var ctrlText = controller.text;
       if (ctrlText.startsWith('@')) {
@@ -26,8 +31,30 @@ class TextForms extends StatelessWidget {
 
         blocPost.content = fim;
 
+        blocPost.entrada.add(
+          MessageModel(
+            content: blocPost.content,
+            // embed: Embeds(
+            //   title: 'Embed message',
+            //   description: 'hdhdhdhd',
+            //   image: Thumbnail(
+            //       url:
+            //           'https://i.pinimg.com/originals/ce/2b/27/ce2b274fa68d234865a6abf69644f472.png'),
+            // ),
+          ),
+        );
+
         ChatModule.to.bloc<TextBloc>().entrada.add(null);
         ChatModule.to.bloc<TextBloc>().idEntry.add(null);
+
+        Provider.of<FirebaseAnalytics>(context)
+            .logEvent(name: 'Send_Mention_Message');
+
+        fbEvent.logEvent(name: 'Send_Mention_Message');
+
+        controller.clear();
+
+        blocPost.content = null;
       }
 
       blocPost.entrada.add(
@@ -42,6 +69,12 @@ class TextForms extends StatelessWidget {
           // ),
         ),
       );
+
+      ChatModule.to.bloc<TextBloc>().entrada.add(null);
+      ChatModule.to.bloc<TextBloc>().idEntry.add(null);
+
+      Provider.of<FirebaseAnalytics>(context).logEvent(name: 'Send_Message');
+      fbEvent.logEvent(name: 'Send_Message');
 
       controller.clear();
 
@@ -84,7 +117,7 @@ class TextForms extends StatelessWidget {
                             validator: (value) =>
                                 value.isEmpty ? 'Deve escrever algo...' : null,
                             onSaved: (value) => blocPost.content = value,
-                            onFieldSubmitted: (_) => _onSubmitt(),
+                            onFieldSubmitted: (_) => _onSubmitt(context),
                           );
                         }),
                   ),
@@ -93,7 +126,7 @@ class TextForms extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.send),
                   iconSize: 28,
-                  onPressed: () => _onSubmitt(),
+                  onPressed: () => _onSubmitt(context),
                   color: Cor().customColorBody,
                 )
               ],

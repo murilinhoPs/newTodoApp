@@ -1,3 +1,5 @@
+import 'package:facebook_app_events/facebook_app_events.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
 import 'package:new_todo_trianons/app/shared/repository/create_templates.dart';
@@ -12,6 +14,7 @@ import 'package:toast/toast.dart';
 class Dialogs {
   final TodoCrud _crudOperations = TodoCrud();
   final TodoIndicesCrud _crudIndices = TodoIndicesCrud();
+  final fbEvent = FacebookAppEvents();
 
   Future openTodoDialog(TodoModel todo, BuildContext context) {
     final _formKey = GlobalKey<FormState>();
@@ -141,10 +144,17 @@ class Dialogs {
               actions: <Widget>[
                 FlatButton(
                   textColor: Cor().customColor,
+
                   // O texto muda de acordo com o todo, se vai criar um novo ou editar
                   child: todo == null
-                      ? Text('Criar nova tarefa')
-                      : Text('Editar tarefa'),
+                      ? Text(
+                          'Criar nova tarefa',
+                          style: TextStyle(fontSize: 18),
+                        )
+                      : Text(
+                          'Editar tarefa',
+                          style: TextStyle(fontSize: 18),
+                        ),
                   onPressed: () {
                     if (taskName.trim().length < 1) {
                       Toast.show('Nada escrito!', context,
@@ -165,6 +175,10 @@ class Dialogs {
                           testIndex.testIndex); // atualiza o index no db
                       // BLOC
                       _formKey.currentState.reset();
+
+                      Provider.of<FirebaseAnalytics>(context)
+                          .logEvent(name: 'Criou_ToDo_Custom');
+                      fbEvent.logEvent(name: 'Criou_ToDo_Custom');
                     } else {
                       _formKey.currentState.save();
                       // BLOC
@@ -177,6 +191,9 @@ class Dialogs {
                       _crudOperations.updateTodo(todo.index, newTodo);
                       // BLOC
                       _formKey.currentState.reset();
+                      Provider.of<FirebaseAnalytics>(context)
+                          .logEvent(name: 'Editou_ToDo');
+                      fbEvent.logEvent(name: 'Editou_ToDo');
                     }
                     Navigator.of(context)
                         .pop(dropdownState.atualizarIcon('Lembrete'));
@@ -268,6 +285,9 @@ class Dialogs {
                     _crudIndices.updateIndex(testIndex.testIndex);
                     // BLOC
                     _formKey.currentState.reset();
+
+                    Provider.of<FirebaseAnalytics>(context)
+                        .logEvent(name: 'Criou_Todo_Template');
 
                     Navigator.of(context)
                         .pop(dropdownState.atualizarIcon('Lembrete'));

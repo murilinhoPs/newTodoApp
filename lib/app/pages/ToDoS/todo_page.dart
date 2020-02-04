@@ -1,3 +1,4 @@
+import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,19 +26,20 @@ class _MyTodoPageState extends State<MyTodoPage> {
 
   final IndexChanges _listenIndex = IndexChanges();
 
+  final fbEvent = FacebookAppEvents();
+
   void _sendScreenInfo(BuildContext context) {
     final FirebaseAnalyticsObserver observer =
         Provider.of<FirebaseAnalyticsObserver>(context, listen: false);
 
     observer.analytics.setCurrentScreen(
         screenName: 'MyTodoPage', screenClassOverride: 'MyTodoPage');
+
+    fbEvent.logEvent(name: 'MyTodoPageOpen');
   }
 
   @override
   void initState() {
-    // tasksBox.clear();
-    // Hive.box('indices').clear();
-    // _crudIndices.updateIndex(0);
     _listenIndex.initialize(context);
     _sendScreenInfo(context);
 
@@ -51,8 +53,8 @@ class _MyTodoPageState extends State<MyTodoPage> {
     final phoneW = MediaQuery.of(context).size.width;
     final phoneH = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      appBar: AppBar(
+    _myAppBar() {
+      return AppBar(
         actions: <Widget>[
           HelpIcon(Colors.white),
         ],
@@ -100,11 +102,14 @@ class _MyTodoPageState extends State<MyTodoPage> {
             height: 10,
           ),
         ),
-      ),
+      );
+    }
+
+    return Scaffold(
+      appBar: _myAppBar(),
       floatingActionButton: SpeedDial(
         child: Icon(Icons.note_add),
         overlayOpacity: 0.5,
-        //animatedIcon: AnimatedIcons.menu_close,
         children: [
           SpeedDialChild(
               child: Icon(Icons.create),
@@ -112,6 +117,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
               labelStyle: MyTheme.globalTheme.textTheme.bodyText1,
               onTap: () async {
                 _dialogs.openTodoDialog(null, context);
+                await fbEvent.logEvent(name: 'Criar_Custom');
                 await analytics.logEvent(
                   name: 'Criar_custom',
                   parameters: <String, dynamic>{
@@ -125,6 +131,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
             labelStyle: MyTheme.globalTheme.textTheme.bodyText1,
             onTap: () async {
               _dialogs.openTemplateDialog(null, context);
+              await fbEvent.logEvent(name: 'Criar_Template');
               await analytics.logEvent(
                 name: 'create_template',
                 parameters: <String, dynamic>{
