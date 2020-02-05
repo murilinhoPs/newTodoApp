@@ -1,9 +1,9 @@
+//import 'package:facebook_analytics/facebook_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/todo_page.dart';
 import 'package:provider/provider.dart';
-import 'package:facebook_app_events/facebook_app_events.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final FirebaseAnalytics analytics =
         Provider.of<FirebaseAnalytics>(context, listen: false);
 
-    final fbEvent = FacebookAppEvents();
+    //final fbEvent = FacebookAnalytics();
 
     return FutureBuilder(
         future: Hive.openBox(
@@ -30,8 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
             )
             .then(
               (_) => analytics.logAppOpen(),
-            )
-            .then((_) => fbEvent.logEvent(name: 'Abriu_App')),
+            ),
+        //.then((_) => fbEvent.logEvent(name: 'Abriu_App')),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {

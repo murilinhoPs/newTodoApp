@@ -190,13 +190,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.8"
-  facebook_app_events:
-    dependency: "direct main"
-    description:
-      name: facebook_app_events
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.0"
   firebase_analytics:
     dependency: "direct main"
     description:

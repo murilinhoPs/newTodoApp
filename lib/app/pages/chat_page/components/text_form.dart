@@ -1,4 +1,4 @@
-import 'package:facebook_app_events/facebook_app_events.dart';
+//import 'package:facebook_analytics/facebook_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/bloc/chat_module.dart';
@@ -16,7 +16,7 @@ class TextForms extends StatelessWidget {
 
   final Controller formController;
 
-  final fbEvent = FacebookAppEvents();
+  //final fbEvent = FacebookAnalytics();
 
   _onSubmitt(context) {
     if (formController.validade()) {
@@ -50,7 +50,7 @@ class TextForms extends StatelessWidget {
         Provider.of<FirebaseAnalytics>(context)
             .logEvent(name: 'Send_Mention_Message');
 
-        fbEvent.logEvent(name: 'Send_Mention_Message');
+        //fbEvent.logEvent(name: 'Send_Mention_Message');
 
         controller.clear();
 
@@ -74,7 +74,7 @@ class TextForms extends StatelessWidget {
       ChatModule.to.bloc<TextBloc>().idEntry.add(null);
 
       Provider.of<FirebaseAnalytics>(context).logEvent(name: 'Send_Message');
-      fbEvent.logEvent(name: 'Send_Message');
+      //fbEvent.logEvent(name: 'Send_Message');
 
       controller.clear();
 

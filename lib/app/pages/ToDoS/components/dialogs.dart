@@ -1,4 +1,4 @@
-import 'package:facebook_app_events/facebook_app_events.dart';
+//import 'package:facebook_analytics/facebook_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
@@ -14,7 +14,7 @@ import 'package:toast/toast.dart';
 class Dialogs {
   final TodoCrud _crudOperations = TodoCrud();
   final TodoIndicesCrud _crudIndices = TodoIndicesCrud();
-  final fbEvent = FacebookAppEvents();
+  //final fbEvent = FacebookAnalytics();
 
   Future openTodoDialog(TodoModel todo, BuildContext context) {
     final _formKey = GlobalKey<FormState>();
@@ -178,7 +178,7 @@ class Dialogs {
 
                       Provider.of<FirebaseAnalytics>(context)
                           .logEvent(name: 'Criou_ToDo_Custom');
-                      fbEvent.logEvent(name: 'Criou_ToDo_Custom');
+                      //fbEvent.logEvent(name: 'Criou_ToDo_Custom');
                     } else {
                       _formKey.currentState.save();
                       // BLOC
@@ -193,7 +193,7 @@ class Dialogs {
                       _formKey.currentState.reset();
                       Provider.of<FirebaseAnalytics>(context)
                           .logEvent(name: 'Editou_ToDo');
-                      fbEvent.logEvent(name: 'Editou_ToDo');
+                      //fbEvent.logEvent(name: 'Editou_ToDo');
                     }
                     Navigator.of(context)
                         .pop(dropdownState.atualizarIcon('Lembrete'));

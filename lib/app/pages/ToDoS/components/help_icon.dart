@@ -1,4 +1,4 @@
-import 'package:facebook_app_events/facebook_app_events.dart';
+//import 'package:facebook_analytics/facebook_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +13,11 @@ class HelpIcon extends StatelessWidget {
   _openChat(BuildContext context) {
     final observer =
         Provider.of<FirebaseAnalyticsObserver>(context, listen: false);
-    final fbEvent = FacebookAppEvents();
+    // final fbEvent = FacebookAnalytics();
 
     observer.analytics.setCurrentScreen(
         screenName: 'DiscordChat', screenClassOverride: 'DiscordChat');
-    fbEvent.logEvent(name: 'DiscordChatPage');
+    //fbEvent.logEvent(name: 'DiscordChatPage');
   }
 
   @override

@@ -1,4 +1,4 @@
-import 'package:facebook_app_events/facebook_app_events.dart';
+//import 'package:facebook_analytics/facebook_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,7 +25,7 @@ class ToDoList extends StatelessWidget {
   final TodoCrud crudOperations = TodoCrud();
   final TodoIndicesCrud _crudIndices = TodoIndicesCrud();
   final Dialogs _dialogs = Dialogs();
-  final fbEvent = FacebookAppEvents();
+  //final fbEvent = FacebookAnalytics();
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class ToDoList extends StatelessWidget {
                     dicasProvider.dicas = todo.icon;
 
                     if (dicasProvider.dicas != 'Lembrete') {
-                      fbEvent.logEvent(name: 'Dicas_Page');
+                      //fbEvent.logEvent(name: 'Dicas_Page');
                       observer.analytics.setCurrentScreen(
                           screenName: 'Dicas', screenClassOverride: 'Dicas()');
                       Navigator.push(
@@ -101,7 +101,7 @@ class ToDoList extends StatelessWidget {
                     size: phoneW * .062,
                   ),
                   onPressed: () {
-                    fbEvent.logEvent(name: 'Open_External_App');
+                    //fbEvent.logEvent(name: 'Open_External_App');
                     Provider.of<FirebaseAnalytics>(context)
                         .logEvent(name: 'Open_External_App');
                     todosIcons.platformOpenUrl(context, todo);
@@ -174,7 +174,7 @@ class ToDoList extends StatelessWidget {
             ? Icon(Icons.check_circle_outline, color: Cor().customColorBody)
             : Icon(Icons.radio_button_unchecked, color: Cor().customColorBody),
         onPressed: () {
-          fbEvent.logEvent(name: 'Completed_ToDo');
+          //fbEvent.logEvent(name: 'Completed_ToDo');
           Provider.of<FirebaseAnalytics>(context)
               .logEvent(name: 'Completed_ToDo');
           // BLOC
@@ -193,7 +193,7 @@ class ToDoList extends StatelessWidget {
           color: Colors.red,
           icon: Icon(Icons.delete_outline),
           onPressed: () async {
-            fbEvent.logEvent(name: 'Deletou_ToDo');
+            //fbEvent.logEvent(name: 'Deletou_ToDo');
             Provider.of<FirebaseAnalytics>(context)
                 .logEvent(name: 'Deletou_ToDo');
             crudOperations.deleteTodo(todo.index);
