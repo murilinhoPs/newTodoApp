@@ -1,6 +1,7 @@
 //import 'package:facebook_analytics/facebook_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_appevents/flutter_facebook_appevents.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
 import 'package:new_todo_trianons/app/shared/repository/create_templates.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/drop_icons_provider.dart';
@@ -178,7 +179,8 @@ class Dialogs {
 
                       Provider.of<FirebaseAnalytics>(context)
                           .logEvent(name: 'Criou_ToDo_Custom');
-                      //fbEvent.logEvent(name: 'Criou_ToDo_Custom');
+
+                      FacebookAppEvents.logEvent('Criou_ToDo_Custom', {});
                     } else {
                       _formKey.currentState.save();
                       // BLOC
@@ -193,7 +195,7 @@ class Dialogs {
                       _formKey.currentState.reset();
                       Provider.of<FirebaseAnalytics>(context)
                           .logEvent(name: 'Editou_ToDo');
-                      //fbEvent.logEvent(name: 'Editou_ToDo');
+                      FacebookAppEvents.logEvent('Editou_ToDo', {});
                     }
                     Navigator.of(context)
                         .pop(dropdownState.atualizarIcon('Lembrete'));
@@ -288,6 +290,7 @@ class Dialogs {
 
                     Provider.of<FirebaseAnalytics>(context)
                         .logEvent(name: 'Criou_Todo_Template');
+                    FacebookAppEvents.logEvent('Criou_Todo_Template', {});
 
                     Navigator.of(context)
                         .pop(dropdownState.atualizarIcon('Lembrete'));

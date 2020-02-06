@@ -2,6 +2,7 @@
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_appevents/flutter_facebook_appevents.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/bloc/chat_module.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,7 @@ class HelpIcon extends StatelessWidget {
 
     observer.analytics.setCurrentScreen(
         screenName: 'DiscordChat', screenClassOverride: 'DiscordChat');
-    //fbEvent.logEvent(name: 'DiscordChatPage');
+    FacebookAppEvents.logEvent('DiscordChatPage', {});
   }
 
   @override

@@ -1,6 +1,7 @@
 //import 'package:facebook_analytics/facebook_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_appevents/flutter_facebook_appevents.dart';
 import 'package:hive/hive.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/todo_page.dart';
 import 'package:provider/provider.dart';
@@ -30,8 +31,10 @@ class _HomeScreenState extends State<HomeScreen> {
             )
             .then(
               (_) => analytics.logAppOpen(),
+            )
+            .then(
+              (_) => FacebookAppEvents.logEvent('AppOpen', {}),
             ),
-        //.then((_) => fbEvent.logEvent(name: 'Abriu_App')),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {

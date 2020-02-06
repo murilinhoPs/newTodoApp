@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_appevents/flutter_facebook_appevents.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/components/dialogs.dart';
 import 'package:new_todo_trianons/app/pages/hints/dicas_provider.dart';
@@ -66,7 +67,7 @@ class ToDoList extends StatelessWidget {
                     dicasProvider.dicas = todo.icon;
 
                     if (dicasProvider.dicas != 'Lembrete') {
-                      //fbEvent.logEvent(name: 'Dicas_Page');
+                      FacebookAppEvents.logEvent('Dicas_Page', {});
                       observer.analytics.setCurrentScreen(
                           screenName: 'Dicas', screenClassOverride: 'Dicas()');
                       Navigator.push(
@@ -174,9 +175,11 @@ class ToDoList extends StatelessWidget {
             ? Icon(Icons.check_circle_outline, color: Cor().customColorBody)
             : Icon(Icons.radio_button_unchecked, color: Cor().customColorBody),
         onPressed: () {
-          //fbEvent.logEvent(name: 'Completed_ToDo');
-          Provider.of<FirebaseAnalytics>(context)
-              .logEvent(name: 'Completed_ToDo');
+          if (!todo.isDone) {
+            FacebookAppEvents.logEvent('Completed_ToDo', {});
+            Provider.of<FirebaseAnalytics>(context)
+                .logEvent(name: 'Completed_ToDo');
+          }
           // BLOC
           crudOperations.updateTodo(
               todo.index,
@@ -193,7 +196,7 @@ class ToDoList extends StatelessWidget {
           color: Colors.red,
           icon: Icon(Icons.delete_outline),
           onPressed: () async {
-            //fbEvent.logEvent(name: 'Deletou_ToDo');
+            FacebookAppEvents.logEvent('Deletou_ToDo', {});
             Provider.of<FirebaseAnalytics>(context)
                 .logEvent(name: 'Deletou_ToDo');
             crudOperations.deleteTodo(todo.index);

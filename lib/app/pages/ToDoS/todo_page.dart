@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_appevents/flutter_facebook_appevents.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -35,7 +36,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
     observer.analytics.setCurrentScreen(
         screenName: 'MyTodoPage', screenClassOverride: 'MyTodoPage');
 
-    //fbEvent.logEvent(name: 'MyTodoPageOpen');
+    FacebookAppEvents.logEvent('MyTodoPageOpen', {});
   }
 
   @override
@@ -75,6 +76,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
             ),
           ),
         ),
+        centerTitle: true,
         title: Flex(
           direction: Axis.vertical,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -117,7 +119,6 @@ class _MyTodoPageState extends State<MyTodoPage> {
               labelStyle: MyTheme.globalTheme.textTheme.bodyText1,
               onTap: () async {
                 _dialogs.openTodoDialog(null, context);
-                //await fbEvent.logEvent(name: 'Criar_Custom');
                 await analytics.logEvent(
                   name: 'Criar_custom',
                   parameters: <String, dynamic>{
@@ -131,7 +132,6 @@ class _MyTodoPageState extends State<MyTodoPage> {
             labelStyle: MyTheme.globalTheme.textTheme.bodyText1,
             onTap: () async {
               _dialogs.openTemplateDialog(null, context);
-              //await fbEvent.logEvent(name: 'Criar_Template');
               await analytics.logEvent(
                 name: 'create_template',
                 parameters: <String, dynamic>{

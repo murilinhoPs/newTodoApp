@@ -1,6 +1,7 @@
 //import 'package:facebook_analytics/facebook_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_appevents/flutter_facebook_appevents.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/bloc/chat_module.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/bloc/text_field_bloc.dart';
 import 'package:new_todo_trianons/app/pages/chat_page/chat.dart';
@@ -50,7 +51,7 @@ class TextForms extends StatelessWidget {
         Provider.of<FirebaseAnalytics>(context)
             .logEvent(name: 'Send_Mention_Message');
 
-        //fbEvent.logEvent(name: 'Send_Mention_Message');
+        FacebookAppEvents.logEvent('Send_Mention_Message', {});
 
         controller.clear();
 
@@ -74,7 +75,7 @@ class TextForms extends StatelessWidget {
       ChatModule.to.bloc<TextBloc>().idEntry.add(null);
 
       Provider.of<FirebaseAnalytics>(context).logEvent(name: 'Send_Message');
-      //fbEvent.logEvent(name: 'Send_Message');
+      FacebookAppEvents.logEvent('Send_Message', {});
 
       controller.clear();
 
@@ -125,7 +126,7 @@ class TextForms extends StatelessWidget {
                 ),
                 IconButton(
                   icon: Icon(Icons.send),
-                  iconSize: 28,
+                  iconSize: 26,
                   onPressed: () => _onSubmitt(context),
                   color: Cor().customColorBody,
                 )
