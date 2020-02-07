@@ -56,6 +56,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
 
     _myAppBar() {
       return AppBar(
+        leading: Container(width: 30),
         actions: <Widget>[
           HelpIcon(Colors.white),
         ],

@@ -177,7 +177,7 @@ class Dialogs {
                       // BLOC
                       _formKey.currentState.reset();
 
-                      Provider.of<FirebaseAnalytics>(context)
+                      Provider.of<FirebaseAnalytics>(context, listen: false)
                           .logEvent(name: 'Criou_ToDo_Custom');
 
                       FacebookAppEvents.logEvent('Criou_ToDo_Custom', {});
@@ -193,7 +193,7 @@ class Dialogs {
                       _crudOperations.updateTodo(todo.index, newTodo);
                       // BLOC
                       _formKey.currentState.reset();
-                      Provider.of<FirebaseAnalytics>(context)
+                      Provider.of<FirebaseAnalytics>(context, listen: false)
                           .logEvent(name: 'Editou_ToDo');
                       FacebookAppEvents.logEvent('Editou_ToDo', {});
                     }
@@ -288,7 +288,7 @@ class Dialogs {
                     // BLOC
                     _formKey.currentState.reset();
 
-                    Provider.of<FirebaseAnalytics>(context)
+                    Provider.of<FirebaseAnalytics>(context, listen: false)
                         .logEvent(name: 'Criou_Todo_Template');
                     FacebookAppEvents.logEvent('Criou_Todo_Template', {});
 

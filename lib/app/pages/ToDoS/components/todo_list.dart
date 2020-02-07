@@ -177,7 +177,7 @@ class ToDoList extends StatelessWidget {
         onPressed: () {
           if (!todo.isDone) {
             FacebookAppEvents.logEvent('Completed_ToDo', {});
-            Provider.of<FirebaseAnalytics>(context)
+            Provider.of<FirebaseAnalytics>(context, listen: false)
                 .logEvent(name: 'Completed_ToDo');
           }
           // BLOC
@@ -197,7 +197,7 @@ class ToDoList extends StatelessWidget {
           icon: Icon(Icons.delete_outline),
           onPressed: () async {
             FacebookAppEvents.logEvent('Deletou_ToDo', {});
-            Provider.of<FirebaseAnalytics>(context)
+            Provider.of<FirebaseAnalytics>(context, listen: false)
                 .logEvent(name: 'Deletou_ToDo');
             crudOperations.deleteTodo(todo.index);
 

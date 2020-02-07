@@ -100,7 +100,7 @@ class CardLinks {
         if (await canLaunch('https://whatsapp.com/')) {
           try {
             await launch(
-              'whatsapp://',
+              'whatsapp://app',
               enableJavaScript: true,
             );
           } catch (e) {
@@ -135,7 +135,130 @@ class CardLinks {
             );
           } catch (e) {
             print("ERRO android " + e.message);
-            await launch('https://www.youtube.com/', enableJavaScript: true);
+            await launch('https://www.tiktok.com/pt_BR/',
+                enableJavaScript: true);
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'Pinterest':
+        if (await canLaunch('https://br.pinterest.com/')) {
+          try {
+            await launch(
+              'pinterest://',
+              enableJavaScript: true,
+            );
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://br.pinterest.com/', enableJavaScript: true);
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'Linkedin':
+        if (await canLaunch('https://www.linkedin.com/')) {
+          try {
+            await launch(
+              'linkedin://',
+              enableJavaScript: true,
+            );
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://www.linkedin.com/', enableJavaScript: true);
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'Twitter':
+        if (await canLaunch('https://twitter.com/')) {
+          try {
+            await launch(
+              'twitter://',
+              enableJavaScript: true,
+            );
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://twitter.com/', enableJavaScript: true);
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'Twitter':
+        if (await canLaunch('https://google.com/')) {
+          try {
+            await launch(
+              'google://',
+              enableJavaScript: true,
+            );
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://google.com/', enableJavaScript: true);
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'Blog':
+        if (await canLaunch('https://www.blogger.com/about/?r=1-null_user')) {
+          try {
+            await launch(
+              'https://www.blogger.com/about/?r=1-null_user',
+              enableJavaScript: true,
+            );
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://www.blogger.com/about/?r=1-null_user',
+                enableJavaScript: true);
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'Snapchat':
+        if (await canLaunch('https://www.snapchat.com/l/pt-br/')) {
+          try {
+            await launch(
+              'snapchat://',
+              enableJavaScript: true,
+            );
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://www.snapchat.com/l/pt-br/',
+                enableJavaScript: true);
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'SlideShare':
+        if (await canLaunch('https://pt.slideshare.net/')) {
+          try {
+            await launch(
+              'slideshare://',
+              enableJavaScript: true,
+            );
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://pt.slideshare.net/', enableJavaScript: true);
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'Flickr':
+        if (await canLaunch('https://www.flickr.com/')) {
+          try {
+            await launch(
+              'flickr://',
+              enableJavaScript: true,
+            );
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://www.flickr.com/', enableJavaScript: true);
           }
         } else {
           showError(context);
@@ -181,7 +304,7 @@ class CardLinks {
         break;
       case 'WhatsApp':
         if (await canLaunch('https://whatsapp.com/')) {
-          await launch('whatsapp://', universalLinksOnly: false);
+          await launch('whatsapp://app', universalLinksOnly: true);
 
           await launch('https://whatsapp.com/');
         } else {
@@ -190,7 +313,7 @@ class CardLinks {
         break;
       case 'Youtube':
         if (await canLaunch('https://www.youtube.com/')) {
-          await launch('youtube://', universalLinksOnly: false);
+          await launch('youtube://', universalLinksOnly: true);
 
           await launch('https://www.youtube.com/');
         } else {
@@ -199,9 +322,124 @@ class CardLinks {
         break;
       case 'TikTok':
         if (await canLaunch('https://www.tiktok.com/pt_BR/')) {
-          await launch('musically://', forceSafariVC: false);
+          await launch('musically://', universalLinksOnly: true);
 
           await launch('https://www.tiktok.com/pt_BR/');
+        } else {
+          showError(context);
+        }
+        break;
+      case 'TikTok':
+        if (await canLaunch('https://www.tiktok.com/pt_BR/')) {
+          try {
+            await launch('musically://', universalLinksOnly: true);
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://www.tiktok.com/pt_BR/');
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'Pinterest':
+        if (await canLaunch('https://br.pinterest.com/')) {
+          try {
+            await launch('pinterest://', universalLinksOnly: true);
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://br.pinterest.com/');
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'Linkedin':
+        if (await canLaunch('https://www.linkedin.com/')) {
+          try {
+            await launch('linkedin://', universalLinksOnly: true);
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://www.linkedin.com/');
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'Twitter':
+        if (await canLaunch('https://twitter.com/')) {
+          try {
+            await launch('twitter://', universalLinksOnly: true);
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://twitter.com/');
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'Twitter':
+        if (await canLaunch('https://google.com/')) {
+          try {
+            await launch('google://', universalLinksOnly: true);
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://google.com/');
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'Blog':
+        if (await canLaunch('https://www.blogger.com/about/?r=1-null_user')) {
+          try {
+            await launch('https://www.blogger.com/about/?r=1-null_user',
+                forceSafariVC: true);
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch(
+              'https://www.blogger.com/about/?r=1-null_user',
+            );
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'Snapchat':
+        if (await canLaunch('https://www.snapchat.com/l/pt-br/')) {
+          try {
+            await launch(
+              'snapchat://',
+              enableJavaScript: true,
+            );
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://www.snapchat.com/l/pt-br/',
+                enableJavaScript: true);
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'SlideShare':
+        if (await canLaunch('https://pt.slideshare.net/')) {
+          try {
+            await launch('slideshare://', universalLinksOnly: true);
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://pt.slideshare.net/');
+          }
+        } else {
+          showError(context);
+        }
+        break;
+      case 'Flickr':
+        if (await canLaunch('https://www.flickr.com/')) {
+          try {
+            await launch('flickr://', universalLinksOnly: true);
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://www.flickr.com/');
+          }
         } else {
           showError(context);
         }

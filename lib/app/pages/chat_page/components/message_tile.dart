@@ -21,7 +21,7 @@ class MessageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String _contentText(MessageModel msg) {
-      return (msg.content.contains('<@'))
+      return (msg.content.contains('<@') || msg.content.contains('<@!'))
           ? msg.content.replaceAll(
               '<@${msg.mentions[0].id}>', '@${msg.mentions[0].username}')
           : (msg.content.contains('<@!'))
