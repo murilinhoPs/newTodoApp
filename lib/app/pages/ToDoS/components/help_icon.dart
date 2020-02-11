@@ -1,4 +1,6 @@
 //import 'package:facebook_analytics/facebook_analytics.dart';
+import 'dart:io';
+
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +35,13 @@ class HelpIcon extends StatelessWidget {
           _openChat(context);
           Navigator.push(
             context,
-            CupertinoPageRoute(
-              builder: (context) => ChatModule(),
-            ),
+            Platform.isIOS
+                ? CupertinoPageRoute(
+                    builder: (context) => ChatModule(),
+                  )
+                : MaterialPageRoute(
+                    builder: (context) => ChatModule(),
+                  ),
           );
         },
       ),

@@ -264,13 +264,6 @@ class CardLinks {
           showError(context);
         }
         break;
-      default:
-        if (await canLaunch('https://www.flutter.dev/')) {
-          await launch('https://www.flutter.dev/', enableJavaScript: true);
-        } else {
-          showError(context);
-        }
-        break;
     }
   }
 
@@ -284,55 +277,62 @@ class CardLinks {
         break;
       case 'Facebook':
         if (await canLaunch('https://www.facebook.com/')) {
-          await launch('facebook://', universalLinksOnly: true);
-
-          await launch('https://www.facebook.com/');
+          try {
+            await launch('facebook://',
+                universalLinksOnly: true, forceSafariVC: false);
+          } catch (e) {
+            await launch('https://www.facebook.com/');
+          }
         } else {
           showError(context);
         }
         break;
       case 'Instagram':
         if (await canLaunch('https://www.instagram.com/')) {
-          await launch('instagram://', universalLinksOnly: true);
-
-          await launch(
-            'https://www.instagram.com/',
-          );
+          try {
+            await launch('instagram://',
+                universalLinksOnly: true, forceSafariVC: false);
+          } catch (e) {
+            await launch(
+              'https://www.instagram.com/',
+            );
+          }
         } else {
           showError(context);
         }
         break;
       case 'WhatsApp':
         if (await canLaunch('https://whatsapp.com/')) {
-          await launch('whatsapp://app', universalLinksOnly: true);
-
-          await launch('https://whatsapp.com/');
+          try {
+            await launch('whatsapp://app',
+                universalLinksOnly: true, forceSafariVC: false);
+          } catch (e) {
+            await launch('https://whatsapp.com/');
+          }
         } else {
           showError(context);
         }
         break;
       case 'Youtube':
         if (await canLaunch('https://www.youtube.com/')) {
-          await launch('youtube://', universalLinksOnly: true);
-
-          await launch('https://www.youtube.com/');
+          try {
+            await launch('youtube://',
+                universalLinksOnly: true, forceSafariVC: false);
+          } catch (e) {
+            print("ERRO android " + e.message);
+            await launch('https://www.youtube.com/');
+          }
         } else {
           showError(context);
         }
-        break;
-      case 'TikTok':
-        if (await canLaunch('https://www.tiktok.com/pt_BR/')) {
-          await launch('musically://', universalLinksOnly: true);
 
-          await launch('https://www.tiktok.com/pt_BR/');
-        } else {
-          showError(context);
-        }
         break;
+
       case 'TikTok':
         if (await canLaunch('https://www.tiktok.com/pt_BR/')) {
           try {
-            await launch('musically://', universalLinksOnly: true);
+            await launch('musically://',
+                universalLinksOnly: true, forceSafariVC: false);
           } catch (e) {
             print("ERRO android " + e.message);
             await launch('https://www.tiktok.com/pt_BR/');
@@ -344,7 +344,8 @@ class CardLinks {
       case 'Pinterest':
         if (await canLaunch('https://br.pinterest.com/')) {
           try {
-            await launch('pinterest://', universalLinksOnly: true);
+            await launch('pinterest://',
+                universalLinksOnly: true, forceSafariVC: false);
           } catch (e) {
             print("ERRO android " + e.message);
             await launch('https://br.pinterest.com/');
@@ -356,7 +357,8 @@ class CardLinks {
       case 'Linkedin':
         if (await canLaunch('https://www.linkedin.com/')) {
           try {
-            await launch('linkedin://', universalLinksOnly: true);
+            await launch('linkedin://',
+                universalLinksOnly: true, forceSafariVC: false);
           } catch (e) {
             print("ERRO android " + e.message);
             await launch('https://www.linkedin.com/');
@@ -368,7 +370,8 @@ class CardLinks {
       case 'Twitter':
         if (await canLaunch('https://twitter.com/')) {
           try {
-            await launch('twitter://', universalLinksOnly: true);
+            await launch('twitter://',
+                universalLinksOnly: true, forceSafariVC: false);
           } catch (e) {
             print("ERRO android " + e.message);
             await launch('https://twitter.com/');
@@ -380,7 +383,8 @@ class CardLinks {
       case 'Twitter':
         if (await canLaunch('https://google.com/')) {
           try {
-            await launch('google://', universalLinksOnly: true);
+            await launch('google://',
+                universalLinksOnly: true, forceSafariVC: false);
           } catch (e) {
             print("ERRO android " + e.message);
             await launch('https://google.com/');
@@ -407,10 +411,8 @@ class CardLinks {
       case 'Snapchat':
         if (await canLaunch('https://www.snapchat.com/l/pt-br/')) {
           try {
-            await launch(
-              'snapchat://',
-              enableJavaScript: true,
-            );
+            await launch('snapchat://',
+                universalLinksOnly: true, forceSafariVC: false);
           } catch (e) {
             print("ERRO android " + e.message);
             await launch('https://www.snapchat.com/l/pt-br/',
@@ -423,7 +425,8 @@ class CardLinks {
       case 'SlideShare':
         if (await canLaunch('https://pt.slideshare.net/')) {
           try {
-            await launch('slideshare://', universalLinksOnly: true);
+            await launch('slideshare://',
+                universalLinksOnly: true, forceSafariVC: false);
           } catch (e) {
             print("ERRO android " + e.message);
             await launch('https://pt.slideshare.net/');
@@ -435,20 +438,12 @@ class CardLinks {
       case 'Flickr':
         if (await canLaunch('https://www.flickr.com/')) {
           try {
-            await launch('flickr://', universalLinksOnly: true);
+            await launch('flickr://',
+                universalLinksOnly: true, forceSafariVC: false);
           } catch (e) {
             print("ERRO android " + e.message);
             await launch('https://www.flickr.com/');
           }
-        } else {
-          showError(context);
-        }
-        break;
-      default:
-        if (await canLaunch('https://flutter.dev/')) {
-          await launch('youtube://', universalLinksOnly: false);
-
-          await launch('https://flutter.dev/', forceSafariVC: true);
         } else {
           showError(context);
         }

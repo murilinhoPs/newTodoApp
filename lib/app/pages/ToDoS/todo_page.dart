@@ -1,5 +1,6 @@
 //import 'package:facebook_analytics/facebook_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/components/body.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/components/dialogs.dart';
-import 'package:new_todo_trianons/app/pages/ToDoS/components/help_icon.dart';
-import 'package:new_todo_trianons/app/shared/custom/Colors.dart';
-import 'package:new_todo_trianons/app/shared/custom/global_theme.dart';
+import 'package:new_todo_trianons/app/pages/ToDoS/components/my_drawer.dart';
 import 'package:provider/provider.dart';
+
+import 'components/my_app_bar.dart';
 
 class MyTodoPage extends StatefulWidget {
   @override
@@ -51,65 +52,10 @@ class _MyTodoPageState extends State<MyTodoPage> {
   Widget build(BuildContext context) {
     final FirebaseAnalytics analytics =
         Provider.of<FirebaseAnalytics>(context, listen: false);
-    final phoneW = MediaQuery.of(context).size.width;
-    final phoneH = MediaQuery.of(context).size.height;
-
-    _myAppBar() {
-      return AppBar(
-        leading: Container(width: 30),
-        actions: <Widget>[
-          HelpIcon(Colors.white),
-        ],
-        elevation: 0.0,
-        flexibleSpace: Container(
-          alignment: Alignment.bottomCenter,
-          child: Image.asset(
-            'assets/images/estrelas.png',
-          ),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: <Color>[
-                Cor().appBarGradientCima,
-                Cor().appBarGradientBaixo[700]
-              ],
-            ),
-          ),
-        ),
-        centerTitle: true,
-        title: Flex(
-          direction: Axis.vertical,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            SizedBox(
-              height: phoneH * 0.01,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  'assets/images/logo.png',
-                  alignment: Alignment.center,
-                  scale: phoneW * 0.008,
-                  filterQuality: FilterQuality.high,
-                )
-              ],
-            )
-          ],
-        ),
-        bottom: PreferredSize(
-          preferredSize: Size(phoneW * 0.3, phoneH * 0.03),
-          child: Container(
-            height: 10,
-          ),
-        ),
-      );
-    }
 
     return Scaffold(
-      appBar: _myAppBar(),
+      appBar: MyAppBar().build(context),
+      drawer: MyDrawer(),
       floatingActionButton: SpeedDial(
         child: Icon(Icons.note_add),
         overlayOpacity: 0.5,
@@ -117,7 +63,7 @@ class _MyTodoPageState extends State<MyTodoPage> {
           SpeedDialChild(
               child: Icon(Icons.create),
               label: 'Criar novo',
-              labelStyle: MyTheme.globalTheme.textTheme.bodyText1,
+              labelStyle: Theme.of(context).textTheme.bodyText1,
               onTap: () async {
                 _dialogs.openTodoDialog(null, context);
                 await analytics.logEvent(
@@ -130,7 +76,9 @@ class _MyTodoPageState extends State<MyTodoPage> {
           SpeedDialChild(
             child: Icon(Icons.add),
             elevation: 0.0,
-            labelStyle: MyTheme.globalTheme.textTheme.bodyText1,
+            labelStyle: Theme.of(context)
+                .textTheme
+                .bodyText1, //MyTheme.globalTheme.textTheme.bodyText1,
             onTap: () async {
               _dialogs.openTemplateDialog(null, context);
               await analytics.logEvent(

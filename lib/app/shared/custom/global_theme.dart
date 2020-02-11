@@ -5,8 +5,16 @@ import 'Colors.dart';
 class MyTheme {
   static final ThemeData globalTheme = ThemeData(
       fontFamily: 'Nunito',
+      iconTheme: IconThemeData(
+        color: Cor().appBarGradientCima,
+      ),
+      accentIconTheme: IconThemeData(
+        color: Cor().appBarGradientCima,
+      ),
       appBarTheme: AppBarTheme(
+        iconTheme: IconThemeData(color: Colors.white),
         elevation: 0.0,
+        brightness: Brightness.light,
         color: Colors.transparent,
         //actionsIconTheme: IconThemeData(color: Colors.white, size: 35),
         textTheme: TextTheme(
@@ -24,9 +32,6 @@ class MyTheme {
         backgroundColor: Cor().appBarGradientCima,
         elevation: 3.0,
       ),
-      iconTheme: IconThemeData(
-          color: Cor()
-              .customColor[600]), //IconThemeData(color: Colors.purple[600]),
       cursorColor: Cor().customColor, //Colors.purple[600],
       accentColor: Cor().customColorBody, //Colors.purple[600],
       textTheme: TextTheme(

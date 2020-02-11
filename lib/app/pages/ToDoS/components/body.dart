@@ -73,7 +73,14 @@ class BodyApp extends StatelessWidget {
                       return ToDoList(todo: todo);
                     })
                 : Center(
-                    child: Text('Escreva sua primeira tarefa'),
+                    child: Text(
+                      'Escreva sua primeira tarefa',
+                      style: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey),
+                    ),
                   ),
           ),
         ],

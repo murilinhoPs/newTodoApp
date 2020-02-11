@@ -1,4 +1,6 @@
 //import 'package:facebook_analytics/facebook_analytics.dart';
+import 'dart:io';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
@@ -72,9 +74,13 @@ class ToDoList extends StatelessWidget {
                           screenName: 'Dicas', screenClassOverride: 'Dicas()');
                       Navigator.push(
                         context,
-                        CupertinoPageRoute(
-                          builder: (context) => Dicas(),
-                        ),
+                        Platform.isIOS
+                            ? CupertinoPageRoute(
+                                builder: (context) => Dicas(),
+                              )
+                            : MaterialPageRoute(
+                                builder: (context) => Dicas(),
+                              ),
                       );
                     } else {
                       return Toast.show('Nada para mostrar', context,
