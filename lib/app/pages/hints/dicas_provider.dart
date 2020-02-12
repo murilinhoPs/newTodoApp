@@ -24,10 +24,10 @@ class DicasState extends ChangeNotifier {
         return Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('• Fuja do conteúdo padrão (imagem + texto)',
+            SelectableText('• Fuja do conteúdo padrão (imagem + texto)',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
             Divider(),
-            Text(
+            SelectableText(
                 '• Experimente criar conteúdo em formatos diferentes. Que tal experimentar um vídeo ou uma transmissão ao vivo. ',
                 style: MyTheme.globalTheme.textTheme.bodyText1)
           ],
@@ -37,10 +37,11 @@ class DicasState extends ChangeNotifier {
       case 'Instagram':
         return Column(
           children: <Widget>[
-            Text('• Use imagens bonitas, coloridas e com alta definição.',
+            SelectableText(
+                '• Use imagens bonitas, coloridas e com alta definição.',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
             Divider(),
-            Text(
+            SelectableText(
                 '• O instagram é uma rede muito mais visual, lembre-se disso quando estiver criando. ',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
           ],
@@ -49,11 +50,11 @@ class DicasState extends ChangeNotifier {
       case 'WhatsApp':
         return Column(
           children: <Widget>[
-            Text(
+            SelectableText(
                 '• Criar um grupo ou faça parte de grupos de Whatsapp com discussão sobre seu mercado de trabalho ',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
             Divider(),
-            Text(
+            SelectableText(
                 '• É possível criar Links para convidar pessoas para grupos ou mesmo um link para enviar mensagens automaticamente para seu celular. Use esses recursos em campanhas, no seu site e em materiais promocionais',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
           ],
@@ -63,11 +64,11 @@ class DicasState extends ChangeNotifier {
       case 'Youtube':
         return Column(
           children: <Widget>[
-            Text(
+            SelectableText(
                 '• Youtube é o site de vídeos mais acessado do mundo. Aqui, a regra é não ter vergonha de gravar um vídeo nem que seja um material curto de 3 minutos.',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
             Divider(),
-            Text(
+            SelectableText(
                 '• Sem ideias para vídeos ou com vergonha para aparecer no seu conteúdo, sem problemas; experimente usar plataformas de criação de vídeos como: biteable.com, videolean, Powtoon, Animoto entre muitos outros.',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
           ],
@@ -77,10 +78,11 @@ class DicasState extends ChangeNotifier {
       case 'Linkedin':
         return Column(
           children: <Widget>[
-            Text(
+            SelectableText(
                 '• Um bom artigo pode ser uma excelente maneira para alcançar pessoas relevantes no seu segmento profissional.',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
-            Text('• Conteúdo inspiracional é bem vindo, mas evite excessos.',
+            SelectableText(
+                '• Conteúdo inspiracional é bem vindo, mas evite excessos.',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
           ],
         );
@@ -88,7 +90,7 @@ class DicasState extends ChangeNotifier {
       case 'Twitter':
         return Column(
           children: <Widget>[
-            Text(
+            SelectableText(
                 '• O microblog twitter é uma rede que funciona em TEMPO REAL (Real Time).',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
             Divider(),
@@ -98,11 +100,11 @@ class DicasState extends ChangeNotifier {
       case 'Pinterest':
         return Column(
           children: <Widget>[
-            Text(
+            SelectableText(
                 '• O Pinterest é um site para novas ideias e inspirações. Um site muito utilizado na hora de planejar, ter ideias e inspirações.',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
             Divider(),
-            Text(
+            SelectableText(
                 '• Ao criar cada conteúdo não esqueça de preencher com carinho todos os campos inclusive o link para uma um site de destino.',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
           ],
@@ -111,22 +113,22 @@ class DicasState extends ChangeNotifier {
       case 'Google':
         return Column(
           children: <Widget>[
-            Text(
+            SelectableText(
                 '• O Google possui dezenas de ferramentas importantes todas elas integradas entre suas soluções.',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
             // Divider(),
-            // Text('• Mantenha atualizado seu cadastro no Google Meu Negócios e publique novidades regularmente. Novas fotos, notícias e dicas.')
+            // SelectableText('• Mantenha atualizado seu cadastro no Google Meu Negócios e publique novidades regularmente. Novas fotos, notícias e dicas.')
           ],
         );
         break;
       case 'Blog':
         return Column(
           children: <Widget>[
-            Text(
+            SelectableText(
                 '• Artigos em Blog são excelentes para melhorar o resultado do seu site em SEO.',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
             Divider(),
-            Text(
+            SelectableText(
                 '• É importante descobrir quais as palavras chaves de forma inteligente e estratégica.',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
           ],
@@ -135,7 +137,7 @@ class DicasState extends ChangeNotifier {
       case 'TikTok':
         return Column(
           children: <Widget>[
-            Text('• Uma nova rede que vale a pena prestar atenção. ',
+            SelectableText('• Uma nova rede que vale a pena prestar atenção. ',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
             Divider(),
           ],
@@ -144,10 +146,11 @@ class DicasState extends ChangeNotifier {
       case 'Snapchat':
         return Column(
           children: <Widget>[
-            Text('• Foi Criado para Nudes, mas pode ser usado para trabalho.',
+            SelectableText(
+                '• Foi Criado para Nudes, mas pode ser usado para trabalho.',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
             Divider(),
-            Text('• Se você não usar agora, talvez não use nunca.',
+            SelectableText('• Se você não usar agora, talvez não use nunca.',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
           ],
         );
@@ -155,7 +158,7 @@ class DicasState extends ChangeNotifier {
       case 'SlideShare':
         return Column(
           children: <Widget>[
-            Text(
+            SelectableText(
                 '• Este é um excelente local para você compartilhar suas apresentações comerciais. Também pode ser um local para referência.',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
             Divider(),
@@ -165,7 +168,7 @@ class DicasState extends ChangeNotifier {
       case 'Flickr':
         return Column(
           children: <Widget>[
-            Text(
+            SelectableText(
                 '• Publicar suas fotos no Flickr é pode ser uma excelente maneira para divulgar seu negócio.',
                 style: MyTheme.globalTheme.textTheme.bodyText1),
             Divider(),

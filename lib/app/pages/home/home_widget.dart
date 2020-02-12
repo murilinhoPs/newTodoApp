@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_appevents/flutter_facebook_appevents.dart';
 import 'package:hive/hive.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/todo_page.dart';
+import 'package:new_todo_trianons/app/pages/onboard_page/onboard.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,8 +18,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final FirebaseAnalytics analytics =
         Provider.of<FirebaseAnalytics>(context, listen: false);
 
-    //final fbEvent = FacebookAnalytics();
-
     return FutureBuilder(
         future: Hive.openBox(
           'tasks',
@@ -28,6 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
         )
             .then(
               (_) => Hive.openBox('indices'),
+            )
+            .then(
+              (_) => Hive.openBox('onboarding'),
             )
             .then(
               (_) => analytics.logAppOpen(),
@@ -44,8 +46,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             }
-            return MyTodoPage();
+            print('boolean: ${Hive.box('onboarding').get('bool')}');
+
+            if (Hive.box('onboarding').get('bool') != false) {
+              return Scaffold(
+                body: Center(
+                  child: OnboardScreen(false),
+                ),
+              );
+            } else
+              return MyTodoPage();
           }
+
           return Scaffold(body: Center(child: CircularProgressIndicator()));
         });
   }

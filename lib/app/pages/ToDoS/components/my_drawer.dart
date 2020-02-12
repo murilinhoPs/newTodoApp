@@ -1,9 +1,26 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:new_todo_trianons/app/pages/onboard_page/onboard.dart';
 import 'package:new_todo_trianons/app/shared/custom/Colors.dart';
 import 'package:new_todo_trianons/app/shared/repository/links_drawer.dart';
 
 class MyDrawer extends StatelessWidget {
   final links = DrawerLinks();
+
+  _onboardingPage(context) {
+    Navigator.push(
+      context,
+      Platform.isIOS
+          ? CupertinoPageRoute(
+              builder: (context) => OnboardScreen(true),
+            )
+          : MaterialPageRoute(
+              builder: (context) => OnboardScreen(true),
+            ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,16 +72,14 @@ class MyDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.help,
-              color: Colors.grey[400],
+              color: Cor().appBarGradientCima,
               size: 34,
             ),
             title: Text(
               'Tutorial do app',
-              style: TextStyle(
-                color: Colors.grey[400],
-              ),
+              style: TextStyle(),
             ),
-            //onTap: () {},
+            onTap: () => _onboardingPage(context),
           ),
           ListTile(
             leading: Icon(
@@ -80,7 +95,7 @@ class MyDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Image.asset(
-              '/Users/trianonsmps/development/projetosFlutter/newTodoApp/assets/images/discord.png',
+              'assets/images/discord.png',
               width: phoneW * 0.08,
             ),
             title: Text('Discord Trianons'),
