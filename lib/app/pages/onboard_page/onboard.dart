@@ -142,8 +142,9 @@ class OnboardScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromRGBO(216, 212, 226, 1),
       body: IntroductionScreen(
-        dotsFlex: 1,
+        dotsFlex: 2,
         curve: Curves.ease,
+        globalBackgroundColor: Color.fromRGBO(216, 212, 226, 1),
         pages: _listPages(context),
         dotsDecorator: DotsDecorator(
           spacing: EdgeInsets.all(5.0),
@@ -157,7 +158,7 @@ class OnboardScreen extends StatelessWidget {
               Radius.circular(15.0),
             ),
           ),
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 3.0),
           elevation: 0.0,
           color: Cor().appBarGradientCima,
           onPressed: () {
@@ -167,7 +168,7 @@ class OnboardScreen extends StatelessWidget {
           child: Text(
             'Pronto!',
             style: TextStyle(
-                fontWeight: FontWeight.w600, color: Colors.white, fontSize: 18),
+                fontWeight: FontWeight.w600, color: Colors.white, fontSize: 15),
           ),
         ),
         showSkipButton: skip,
@@ -177,7 +178,7 @@ class OnboardScreen extends StatelessWidget {
               Radius.circular(15.0),
             ),
           ),
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
           elevation: 0.0,
           color: Cor().appBarGradientCima,
           onPressed: () {
@@ -186,7 +187,7 @@ class OnboardScreen extends StatelessWidget {
           child: Text(
             'Pular',
             style: TextStyle(
-                fontWeight: FontWeight.w600, color: Colors.white, fontSize: 18),
+                fontWeight: FontWeight.w600, color: Colors.white, fontSize: 16),
           ),
         ),
       ),

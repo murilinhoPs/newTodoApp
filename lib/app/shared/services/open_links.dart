@@ -347,7 +347,7 @@ class CardLinks {
             await launch('pinterest://',
                 universalLinksOnly: true, forceSafariVC: false);
           } catch (e) {
-            print("ERRO android " + e.message);
+            print(e.message);
             await launch('https://br.pinterest.com/');
           }
         } else {
@@ -451,9 +451,9 @@ class CardLinks {
     }
   }
 
-  Future platformOpenUrl(BuildContext context, TodoModel todo) async {
-    if (Platform.isAndroid)
-      _abrirAndroidUrl(todo.icon, context);
-    else if (Platform.isIOS) _abrirIosUrl(todo.icon, context);
+  platformOpenUrl(BuildContext context, TodoModel todo) {
+    Platform.isIOS
+        ? _abrirAndroidUrl(todo.icon, context)
+        : _abrirIosUrl(todo.icon, context);
   }
 }

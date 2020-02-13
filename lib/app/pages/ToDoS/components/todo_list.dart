@@ -108,10 +108,10 @@ class ToDoList extends StatelessWidget {
                     size: phoneW * .062,
                   ),
                   onPressed: () {
-                    //fbEvent.logEvent(name: 'Open_External_App');
-                    Provider.of<FirebaseAnalytics>(context)
-                        .logEvent(name: 'Open_External_App');
                     todosIcons.platformOpenUrl(context, todo);
+                    //fbEvent.logEvent(name: 'Open_External_App');
+                    // Provider.of<FirebaseAnalytics>(context, listen: false)
+                    //     .logEvent(name: 'Open_External_App');
                   },
                 ),
               ),
