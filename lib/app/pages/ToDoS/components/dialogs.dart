@@ -241,7 +241,7 @@ class Dialogs {
                     margin: EdgeInsets.only(top: phoneH * 0.02),
                     padding: EdgeInsets.all(10.0),
                     child: Text(
-                      'Adicione uma tarefa de rede social pré-definida para ajudar nas tarefas',
+                      'Adicione uma tarefa pronta para ajudar em alguma rede social',
                       style: TextStyle(fontSize: 20.0),
                     ),
                   ),
@@ -280,17 +280,28 @@ class Dialogs {
                   child: Text('Criar tarefa'),
                   onPressed: () async {
                     _formKey.currentState.save();
-                    // BLOC
+                    if (dropdownState.selectionIcon == 'Facebook' ||
+                        dropdownState.selectionIcon == 'Instagram' ||
+                        dropdownState.selectionIcon == 'WhatsApp' ||
+                        dropdownState.selectionIcon == 'Youtube' ||
+                        dropdownState.selectionIcon == 'Linkedin' ||
+                        dropdownState.selectionIcon == 'Twitter' ||
+                        dropdownState.selectionIcon == 'Pinterest' ||
+                        dropdownState.selectionIcon == 'TikTok') {
+                      // BLOC
+                      print('criou');
+                      await _crudOperations.createTodo(template.criarTemplate(
+                          dropdownState.selectionIcon, context));
+                      _crudIndices.updateIndex(testIndex.testIndex);
+                      // BLOC
+                      _formKey.currentState.reset();
 
-                    await _crudOperations.createTodo(template.criarTemplate(
-                        dropdownState.selectionIcon, context));
-                    _crudIndices.updateIndex(testIndex.testIndex);
-                    // BLOC
-                    _formKey.currentState.reset();
-
-                    Provider.of<FirebaseAnalytics>(context, listen: false)
-                        .logEvent(name: 'Criou_Todo_Template');
-                    FacebookAppEvents.logEvent('Criou_Todo_Template', {});
+                      Provider.of<FirebaseAnalytics>(context, listen: false)
+                          .logEvent(name: 'Criou_Todo_Template');
+                      FacebookAppEvents.logEvent('Criou_Todo_Template', {});
+                    } else {
+                      Toast.show('nada para criar...', context);
+                    }
 
                     Navigator.of(context)
                         .pop(dropdownState.atualizarIcon('Lembrete'));

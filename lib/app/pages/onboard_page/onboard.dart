@@ -166,7 +166,7 @@ class OnboardScreen extends StatelessWidget {
             _pagePush(context);
           },
           child: Text(
-            'Pronto!',
+            'Ok!',
             style: TextStyle(
                 fontWeight: FontWeight.w600, color: Colors.white, fontSize: 15),
           ),

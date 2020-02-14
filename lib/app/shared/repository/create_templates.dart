@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/indices_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/bloc/drop_icons_provider.dart';
+import 'package:toast/toast.dart';
 import '../model/todo_model.dart';
 
 class Templates {
@@ -82,7 +83,7 @@ class Templates {
         );
         break;
       default:
-        return Navigator.of(context).pop();
+        return Toast.show('nada para criar...', context);
         break;
       // case 'Lembrete':
       //   return Navigator.of(context).pop();

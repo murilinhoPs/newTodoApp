@@ -42,6 +42,8 @@ class _MyTodoPageState extends State<MyTodoPage> {
 
   @override
   void initState() {
+    //tasksBox.clear();
+
     _listenIndex.initialize(context);
     _sendScreenInfo(context);
 

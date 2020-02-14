@@ -73,18 +73,28 @@ class BodyApp extends StatelessWidget {
                       // print('saveIndex: ${_crudIndices.readIndex()}');
                       return ToDoList(todo: todo);
                     })
-                : CustomPaint(
-                    painter: ArrowPainter(),
-                    child: Center(
-                      child: Text(
-                        'Escreva sua primeira tarefa',
-                        style: TextStyle(
-                            fontFamily: 'Nunito',
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey),
+                : Stack(
+                    children: <Widget>[
+                      Center(
+                        child: Text(
+                          'Escreva sua primeira tarefa',
+                          style: TextStyle(
+                              fontFamily: 'Nunito',
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey),
+                        ),
                       ),
-                    ),
+                      FittedBox(
+                        child: SizedBox(
+                          height: phoneH,
+                          width: phoneW,
+                          child: CustomPaint(
+                            painter: ArrowPainter(),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
           ),
         ],
@@ -98,18 +108,26 @@ class ArrowPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final startAngle = 19 * pi / 12;
     final sweepAngle = pi / 2.5;
-    final rect = Rect.fromLTRB(200, 420, 371, 700);
+
+    final rect = Rect.fromLTRB(300, size.height / 1.8, 440, size.height * 1.05);
+
     final paint = Paint()
       ..color = Colors.red
       ..strokeWidth = 7.0
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
+    final offsetAL1 = Offset(415, size.height - size.height / 4.41);
+    final offsetAL2 = Offset(440, size.height - size.height / 5.8);
+
+    final offsetAR1 = Offset(440, size.height - size.height / 5.8);
+    final offsetAR2 = Offset(465, size.height - size.height / 4.41);
+
+    canvas.drawLine(offsetAL1, offsetAL2, paint);
+
+    canvas.drawLine(offsetAR1, offsetAR2, paint);
+
     canvas.drawArc(rect, startAngle, sweepAngle, false, paint);
-
-    canvas.drawLine(Offset(345, 550), Offset(369.4, 580), paint);
-
-    canvas.drawLine(Offset(372, 580), Offset(390, 550), paint);
   }
 
   @override

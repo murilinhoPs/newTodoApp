@@ -12,12 +12,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class Dicas extends StatelessWidget {
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    return directory.path;
-  }
-
   Future<ui.Image> _loadErnesto() async {
     ByteData bd = await rootBundle.load('assets/ernesto.png');
 
@@ -34,7 +28,7 @@ class Dicas extends StatelessWidget {
   Widget build(BuildContext context) {
     final phoneW = MediaQuery.of(context).size.width;
     final phoneH = MediaQuery.of(context).size.height;
-
+    print(phoneH);
     return Scaffold(
       appBar: AppBar(
         leading: MyBackButton(
@@ -87,43 +81,39 @@ class Dicas extends StatelessWidget {
             );
 
           if (snapshot.hasData)
-            return CustomPaint(
-              painter: BaloonPainter(snapshot.data),
-              child: Consumer<DicasState>(
-                builder: (context, dicasProvider, widget) => Center(
-                  child: Container(
-                    margin: EdgeInsets.only(top: 10),
-                    padding: EdgeInsets.all(phoneW * .1),
-                    child: Column(
-                      children: <Widget>[
-                        ListBody(
-                          children: <Widget>[
-                            dicasProvider.carregarDicas(
-                                'Facebook'), //dicasProvider.dicas
-                          ],
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: phoneH * 0.05),
-                          height: phoneW * 0.15,
-                          child: Center(
-                            child: Text(
-                              'Em breve teremos mais dicas!',
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Nunito'),
-                            ),
+            return Center(
+              child: FittedBox(
+                child: SizedBox(
+                  width: phoneW,
+                  height: phoneH,
+                  child: CustomPaint(
+                    painter: BaloonPainter(snapshot.data),
+                    child: Consumer<DicasState>(
+                      builder: (context, dicasProvider, widget) => Center(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 10),
+                          padding: EdgeInsets.all(phoneW * .1),
+                          child: Column(
+                            children: <Widget>[
+                              ListBody(
+                                children: <Widget>[
+                                  dicasProvider.carregarDicas(dicasProvider
+                                      .dicas), //dicasProvider.dicas
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
               ),
             );
 
-          return CircularProgressIndicator();
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         },
       ),
     );
@@ -139,24 +129,32 @@ class BaloonPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final rrect = RRect.fromLTRBR(
-      25,
+      0,
       10,
-      390,
-      530,
+      380,
+      size.height - size.height / 2.5,
+      //515,
       Radius.circular(30),
     );
     final paint = Paint()
       ..color = Colors.orange[100]
       ..strokeWidth = 50.0;
 
-    canvas.drawRRect(rrect, paint);
-    canvas.drawLine(Offset(330, 531), Offset(100, 400), paint);
+    final deviceOffset = Offset(650, size.height + size.height);
 
-    canvas.scale(size.width / (image.width.toDouble()) / 2.2);
+    print(size.width);
+    print(size.height);
+
+    canvas.drawRRect(rrect, paint);
+    canvas.drawLine(Offset(310, size.height - size.height / 2.55),
+        Offset(100, 290), paint); //527)
+
+    canvas.scale(size.width / (image.width.toDouble()) / 2.1);
 
     canvas.drawImage(
       image,
-      Offset(630, 1540),
+      deviceOffset,
+      //Offset(650, 1580),
       Paint(),
     );
   }
