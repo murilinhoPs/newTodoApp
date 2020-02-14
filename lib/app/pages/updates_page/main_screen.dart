@@ -60,7 +60,8 @@ class Updates extends StatelessWidget {
 
     • Adicionamos uma tela de bem-vindo para explicar sobre o app
     • Um menu de hambúrguer na lateral esquerda com mais informações
-    • Corrigimos bugs quando o usuário mudava de página e do chat. ''',
+    • Corrigimos bugs quando o usuário mudava de página e do chat. 
+    • Adicionamos desenhos para ilustrar algumas ações e deixar interessante.''',
                   style: TextStyle(fontSize: 16),
                   textAlign: TextAlign.left,
                 ),
