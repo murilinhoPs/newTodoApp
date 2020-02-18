@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_todo_trianons/app/pages/hints/components/back_button.dart';
 import 'package:new_todo_trianons/app/shared/custom/Colors.dart';
+import 'package:new_todo_trianons/app/shared/repository/links_drawer.dart';
 import 'bloc/chat_module.dart';
 import 'bloc/get_bloc.dart';
 import 'bloc/post_bloc.dart';
@@ -20,6 +21,8 @@ class _State extends State<ChatPage> {
   Controller formController;
 
   final blocPost = ChatModule.to.bloc<PostBloc>();
+
+  final links = DrawerLinks();
 
   @override
   void initState() {
@@ -38,14 +41,29 @@ class _State extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 3.0,
         leading: MyBackButton(
           EdgeInsets.only(bottom: 5.0),
         ),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: GestureDetector(
+              onTap: () => links.discord(context),
+              child: Image.asset(
+                'assets/images/discord.png',
+                width: MediaQuery.of(context).size.width * 0.12,
+              ),
+            ),
+          )
+        ],
         title: Text(
-          'Tire suas dúvidas aqui!',
+          'Tire suas dúvidas!',
           style: TextStyle(
-              color: Cor().customColor, fontFamily: 'Nunito', fontSize: 22),
+              color: Cor().customColor, fontFamily: 'Nunito', fontSize: 20),
         ),
         centerTitle: true,
       ),
@@ -59,10 +77,10 @@ class _State extends State<ChatPage> {
                 return snapshot.hasData
                     ? Padding(
                         padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).size.height * 0.085),
+                            bottom: MediaQuery.of(context).size.height * 0.065),
                         child: ListView.builder(
                           reverse: true,
-                          shrinkWrap: true,
+                          //shrinkWrap: true,
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, index) {
                             MessageModel item = snapshot.data[index];

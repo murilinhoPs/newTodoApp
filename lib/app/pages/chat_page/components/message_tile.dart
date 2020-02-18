@@ -21,12 +21,12 @@ class MessageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String _contentText(MessageModel msg) {
-      return (msg.content.contains('<@') || msg.content.contains('<@!'))
+      return (msg.content.contains('<@!'))
           ? msg.content.replaceAll(
-              '<@${msg.mentions[0].id}>', '@${msg.mentions[0].username}')
-          : (msg.content.contains('<@!'))
+              '<@!${msg.mentions[0].id}>', '@${msg.mentions[0].username}')
+          : (msg.content.contains('<@'))
               ? msg.content.replaceAll(
-                  '<@!${msg.mentions[0].id}>', '@${msg.mentions[0].username}')
+                  '<@${msg.mentions[0].id}>', '@${msg.mentions[0].username}')
               : msg.content;
     }
 
@@ -41,27 +41,99 @@ class MessageTile extends StatelessWidget {
                 );
     }
 
-    return Column(
-      children: <Widget>[
-        ListTile(
-          dense: true,
-          onTap: () => _blocData(),
-          leading: Hero(
+    _contentAlignmentUser() {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Hero(
             child: CircleAvatar(
+              minRadius: 22,
               backgroundColor: Colors.white,
               backgroundImage: NetworkImage(
                   'https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png'),
             ),
             tag: message.author.username,
           ),
-          title: Text(message.author.username,
-              style: TextStyle(color: Colors.deepPurple[800], fontSize: 16)),
-          subtitle: Text(
-            _contentText(message),
-            style: TextStyle(fontSize: 17, color: Colors.grey[800]),
+          SizedBox(width: 8.0),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                message.author.username,
+                style: TextStyle(color: Colors.deepPurple[800], fontSize: 18),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Text(
+                  _contentText(message),
+                  softWrap: true,
+                  overflow: TextOverflow.clip,
+                  style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+                ),
+              ),
+              _contentImage(message)
+            ],
           ),
+        ],
+      );
+    }
+
+    _contentAlignmentBot() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Text(
+                message.author.username,
+                style: TextStyle(color: Colors.deepPurple[800], fontSize: 18),
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Text(
+                  _contentText(message),
+                  softWrap: true,
+                  overflow: TextOverflow.clip,
+                  style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+                ),
+              ),
+              _contentImage(message)
+            ],
+          ),
+          SizedBox(width: 8.0),
+          Hero(
+            child: CircleAvatar(
+              minRadius: 22,
+              backgroundColor: Colors.white,
+              backgroundImage: NetworkImage(
+                  'https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png'),
+            ),
+            tag: message.author.username,
+          ),
+        ],
+      );
+    }
+
+    return Column(
+      children: <Widget>[
+        GestureDetector(
+          onTap: () => _blocData(),
+          child: message.author.username == 'HelpBot'
+              ? Padding(
+                  padding: EdgeInsets.only(top: 12.0),
+                  child: _contentAlignmentBot(),
+                )
+              : Padding(
+                  padding: EdgeInsets.only(top: 12.0),
+                  child: _contentAlignmentUser(),
+                ),
         ),
-        _contentImage(message)
+        Divider(
+          thickness: 0.5,
+        )
       ],
     );
   }

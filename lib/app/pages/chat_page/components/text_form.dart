@@ -86,7 +86,7 @@ class TextForms extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Align(
         alignment: Alignment.bottomCenter,
         child: Container(
@@ -94,8 +94,8 @@ class TextForms extends StatelessWidget {
           child: Card(
             elevation: 0.0,
             child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
                   width: MediaQuery.of(context).size.width * 0.8,
@@ -109,6 +109,7 @@ class TextForms extends StatelessWidget {
                           // ${ChatModule.to.bloc<TextBloc>().idValue}';
 
                           return TextFormField(
+                            maxLines: 5,
                             controller: controller,
                             style: TextStyle(decoration: TextDecoration.none),
                             decoration: InputDecoration(
@@ -126,7 +127,7 @@ class TextForms extends StatelessWidget {
                 ),
                 IconButton(
                   icon: Icon(Icons.send),
-                  iconSize: 26,
+                  iconSize: 25,
                   onPressed: () => _onSubmitt(context),
                   color: Cor().customColorBody,
                 )

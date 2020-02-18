@@ -121,6 +121,7 @@ class Dialogs {
                       Row(
                         children: <Widget>[
                           Expanded(
+                            flex: 2,
                             child: TextField(
                               cursorColor: Cor().customColor,
                               maxLines: null,
