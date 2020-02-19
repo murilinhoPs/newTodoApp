@@ -19,6 +19,8 @@ class TextForms extends StatelessWidget {
 
   //final fbEvent = FacebookAnalytics();
 
+  bool showUnderline = false;
+
   _onSubmitt(context) {
     if (formController.validade()) {
       var ctrlText = controller.text;
@@ -85,54 +87,64 @@ class TextForms extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: Card(
-            elevation: 0.0,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  child: Form(
-                    key: formController.formKey,
-                    child: StreamBuilder<String>(
-                        stream: ChatModule.to.bloc<TextBloc>().saida,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData)
-                            controller.text = '${snapshot.data}';
-                          // ${ChatModule.to.bloc<TextBloc>().idValue}';
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        width: MediaQuery.of(context).size.width * 2,
+        child: Card(
+          elevation: 0.0,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                decoration: showUnderline
+                    ? BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      )
+                    : BoxDecoration(),
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Form(
+                  key: formController.formKey,
+                  child: StreamBuilder<String>(
+                      stream: ChatModule.to.bloc<TextBloc>().saida,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData)
+                          controller.text = '${snapshot.data}';
+                        // ${ChatModule.to.bloc<TextBloc>().idValue}';
 
-                          return TextFormField(
-                            maxLines: 5,
-                            controller: controller,
-                            style: TextStyle(decoration: TextDecoration.none),
-                            decoration: InputDecoration(
-                              hintText: 'Escreva alguma coisa',
-                            ),
-                            autocorrect: false,
-                            validator: (value) =>
-                                value.isEmpty ? 'Deve escrever algo...' : null,
-                            onSaved: (value) => blocPost.content = value,
-                            onFieldSubmitted: (_) => _onSubmitt(context),
-                          );
-                        }),
-                  ),
-                  height: 50,
+                        return TextFormField(
+                          maxLines: 5,
+                          controller: controller,
+                          style: TextStyle(decoration: TextDecoration.none),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintStyle:
+                                TextStyle(decoration: TextDecoration.none),
+                            hintText: 'Escreva alguma coisa',
+                          ),
+                          autocorrect: false,
+                          expands: false,
+                          validator: (value) =>
+                              value.isEmpty ? 'Deve escrever algo...' : null,
+                          onSaved: (value) => blocPost.content = value,
+                          onFieldSubmitted: (_) => _onSubmitt(context),
+                        );
+                      }),
                 ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  iconSize: 25,
-                  onPressed: () => _onSubmitt(context),
-                  color: Cor().customColorBody,
-                )
-              ],
-            ),
+                height: 50,
+              ),
+              IconButton(
+                icon: Icon(Icons.send),
+                iconSize: 25,
+                onPressed: () => _onSubmitt(context),
+                color: Cor().customColorBody,
+              )
+            ],
           ),
         ),
       ),

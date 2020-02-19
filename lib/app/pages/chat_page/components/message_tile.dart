@@ -42,78 +42,97 @@ class MessageTile extends StatelessWidget {
     }
 
     _contentAlignmentUser() {
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Hero(
-            child: CircleAvatar(
-              minRadius: 22,
-              backgroundColor: Colors.white,
-              backgroundImage: NetworkImage(
-                  'https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png'),
+      return Container(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        // decoration: BoxDecoration(
+        //   border: Border(
+        //     bottom: BorderSide(
+        //         color: Colors.grey, style: BorderStyle.solid, width: 0.5),
+        //   ),
+        // ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Hero(
+              child: CircleAvatar(
+                minRadius: 22,
+                backgroundColor: Colors.white,
+                backgroundImage: NetworkImage(
+                    'https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png'),
+              ),
+              tag: message.author.username,
             ),
-            tag: message.author.username,
-          ),
-          SizedBox(width: 8.0),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                message.author.username,
-                style: TextStyle(color: Colors.deepPurple[800], fontSize: 18),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Text(
-                  _contentText(message),
-                  softWrap: true,
-                  overflow: TextOverflow.clip,
-                  style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+            SizedBox(width: 8.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  message.author.username,
+                  style: TextStyle(color: Colors.deepPurple[800], fontSize: 18),
                 ),
-              ),
-              _contentImage(message)
-            ],
-          ),
-        ],
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Text(
+                    _contentText(message),
+                    softWrap: true,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+                  ),
+                ),
+                _contentImage(message)
+              ],
+            ),
+          ],
+        ),
       );
     }
 
     _contentAlignmentBot() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Text(
-                message.author.username,
-                style: TextStyle(color: Colors.deepPurple[800], fontSize: 18),
-              ),
-              Container(
-                alignment: Alignment.centerRight,
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Text(
-                  _contentText(message),
-                  softWrap: true,
-                  overflow: TextOverflow.clip,
-                  style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+      return Container(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        // decoration: BoxDecoration(
+        //   border: Border(
+        //     bottom: BorderSide(
+        //         color: Colors.grey, style: BorderStyle.solid, width: 0.5),
+        //   ),
+        // ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  message.author.username,
+                  style: TextStyle(color: Colors.deepPurple[800], fontSize: 18),
                 ),
-              ),
-              _contentImage(message)
-            ],
-          ),
-          SizedBox(width: 8.0),
-          Hero(
-            child: CircleAvatar(
-              minRadius: 22,
-              backgroundColor: Colors.white,
-              backgroundImage: NetworkImage(
-                  'https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png'),
+                Container(
+                  alignment: Alignment.centerRight,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Text(
+                    _contentText(message),
+                    softWrap: true,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+                  ),
+                ),
+                _contentImage(message)
+              ],
             ),
-            tag: message.author.username,
-          ),
-        ],
+            SizedBox(width: 8.0),
+            Hero(
+              child: CircleAvatar(
+                minRadius: 22,
+                backgroundColor: Colors.white,
+                backgroundImage: NetworkImage(
+                    'https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png'),
+              ),
+              tag: message.author.username,
+            ),
+          ],
+        ),
       );
     }
 
@@ -131,9 +150,9 @@ class MessageTile extends StatelessWidget {
                   child: _contentAlignmentUser(),
                 ),
         ),
-        Divider(
-          thickness: 0.5,
-        )
+        // Divider(
+        //   thickness: 0.5,
+        // )
       ],
     );
   }
