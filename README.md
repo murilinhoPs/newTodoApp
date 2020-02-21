@@ -14,7 +14,7 @@ Trianons Checklist
 _________________________________________________________________________________________________________________________________________
 
 <div display="flex">
-   <img  width="50">
+   <img  width="10">
 <img align="center" src="https://cdn.discordapp.com/attachments/572841858179399683/680417926981091331/Simulator_Screen_Shot_-_iPhone_11_Pro_-_2020-02-21_at_11.16.00.png" alt="drawing" height="350"/>
  
 <img align="center" src="https://cdn.discordapp.com/attachments/572841858179399683/680417926524043286/Simulator_Screen_Shot_-_iPhone_11_Pro_-_2020-02-21_at_11.16.07.png" alt="drawing" height="350"/>
