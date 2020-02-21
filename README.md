@@ -8,7 +8,9 @@ Trianons Checklist
 </h1>
 <p align="center">Trianons Checklist app is a ToDo app about social media to help organize your social media workflow.</p>
 <p align="center" display="flex">
+    <a href="https://creativecommons.org/licenses/by-nc/4.0/">
       <img width=180 src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Cc-by-nc_icon.svg/1200px-Cc-by-nc_icon.svg.png" alt="logo">
+    </a>
 </p>
 
 _________________________________________________________________________________________________________________________________________
