@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -8,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:new_todo_trianons/app/pages/ToDoS/components/help_icon.dart';
 import 'package:new_todo_trianons/app/pages/hints/components/back_button.dart';
 import 'package:new_todo_trianons/app/pages/hints/dicas_provider.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class Dicas extends StatelessWidget {

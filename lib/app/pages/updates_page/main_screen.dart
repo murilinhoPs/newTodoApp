@@ -47,6 +47,26 @@ class Updates extends StatelessWidget {
         padding: EdgeInsets.all(MediaQuery.of(context).size.width * .05),
         child: ListView(
           children: <Widget>[
+            // 1.3.0
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: ListTile(
+                title: Text(
+                  '#  1. 3. 0',
+                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                ),
+                subtitle: SelectableText(
+                  '''
+
+    • Criamos um novo ícone para o app
+    • Nova interface do chat, mais fácil de entender
+    • Corrigimos alguns bugs.''',
+                  style: TextStyle(fontSize: 16),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ),
+
             // 1.2.0
             Padding(
               padding: const EdgeInsets.only(top: 15.0),

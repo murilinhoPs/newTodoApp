@@ -5,6 +5,8 @@ import 'Colors.dart';
 class MyTheme {
   static final ThemeData globalTheme = ThemeData(
       fontFamily: 'Nunito',
+      backgroundColor: Colors.white,
+      scaffoldBackgroundColor: Colors.white,
       iconTheme: IconThemeData(
         color: Cor().appBarGradientCima,
       ),
